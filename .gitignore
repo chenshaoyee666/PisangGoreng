@@ -1,0 +1,93 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+build/
+.gradle/
+*.iml
+*.jar
+*.jks
+*.p8
+*.mobileprovision
+*.sign
+*.lock
+
+# iOS/macOS
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/GeneratedPluginRegistrant.swift
+ios/Pods/
+ios/Podfile.lock
+ios/.symlinks/
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+ios/Gemfile.lock
+*.pbxuser
+*.perspectivev3
+*.xcworkspace
+!ios/Runner.xcworkspace
+xcUserData/
+*.moved-aside
+DerivedData/
+
+# Android
+android/.gradle/
+android/gradlew
+android/gradlew.bat
+android/gradle/
+android/local.properties
+android/*.jks
+android/app/debug
+android/app/release
+*.apk
+*.aab
+key.properties
+
+# Node.js / Backend
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+.env.local
+.env.*.local
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.ruby-version
+.ruby-gemset
+
+# Web
+web/js/main.dart.js
+
+# Output files
+*.exe
+*.dll
+*.dylib
+*.so
+*.o
+*.a
+
+# Misc
+*.pyc
+__pycache__/
+.env
+.env.local
+*.pem
+*.key
+*.crt
