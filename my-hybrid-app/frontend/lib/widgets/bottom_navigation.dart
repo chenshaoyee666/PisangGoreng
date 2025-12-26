@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int currentIndex;
@@ -15,60 +18,65 @@ class CustomBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<BottomNavigationBarItem> items = isSharer
-        ? _getSharerItems()
-        : _getRecipientItems();
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final lang = appState.selectedLanguage;
+        List<BottomNavigationBarItem> items = isSharer
+            ? _getSharerItems(lang)
+            : _getRecipientItems(lang);
 
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: AppTheme.primaryGreen,
-      unselectedItemColor: AppTheme.textSecondary,
-      backgroundColor: Colors.white,
-      elevation: 8,
-      items: items,
+        return BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: onTap,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: AppTheme.primaryGreen,
+          unselectedItemColor: AppTheme.textSecondary,
+          backgroundColor: Colors.white,
+          elevation: 8,
+          items: items,
+        );
+      },
     );
   }
 
-  List<BottomNavigationBarItem> _getSharerItems() {
-    return const [
+  List<BottomNavigationBarItem> _getSharerItems(String lang) {
+    return [
       BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: 'Home',
+        icon: const Icon(Icons.home),
+        label: Translations.get('home', lang),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.camera_alt),
-        label: 'Upload',
+        icon: const Icon(Icons.camera_alt),
+        label: Translations.get('upload', lang),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.menu_book),
-        label: 'Recipes',
+        icon: const Icon(Icons.menu_book),
+        label: Translations.get('recipes', lang),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.info_outline),
-        label: 'About',
+        icon: const Icon(Icons.info_outline),
+        label: Translations.get('about', lang),
       ),
     ];
   }
 
-  List<BottomNavigationBarItem> _getRecipientItems() {
-    return const [
+  List<BottomNavigationBarItem> _getRecipientItems(String lang) {
+    return [
       BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: 'Home',
+        icon: const Icon(Icons.home),
+        label: Translations.get('home', lang),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.qr_code_scanner),
-        label: 'Scan QR',
+        icon: const Icon(Icons.qr_code_scanner),
+        label: Translations.get('scan_qr', lang),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.map),
-        label: 'Map',
+        icon: const Icon(Icons.map),
+        label: Translations.get('map', lang),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.info_outline),
-        label: 'About',
+        icon: const Icon(Icons.info_outline),
+        label: Translations.get('about', lang),
       ),
     ];
   }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
+import '../widgets/gradient_background.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -38,44 +42,50 @@ class _AboutUsScreenState extends State<AboutUsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FadeTransition(
-        opacity: _fadeAnimation,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeroSection(),
-              const SizedBox(height: 32),
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        return Scaffold(
+          body: GradientBackground(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeroSection(appState.selectedLanguage),
+                    const SizedBox(height: 32),
 
-              _buildMissionSection(),
-              const SizedBox(height: 32),
+                  _buildMissionSection(appState.selectedLanguage),
+                  const SizedBox(height: 32),
 
-              _buildImpactStatistics(),
-              const SizedBox(height: 32),
+                  _buildImpactStatistics(appState.selectedLanguage),
+                  const SizedBox(height: 32),
 
-              _buildHowItWorks(),
-              const SizedBox(height: 32),
+                  _buildHowItWorks(appState.selectedLanguage),
+                  const SizedBox(height: 32),
 
-              _buildArticlesSection(),
-              const SizedBox(height: 32),
+                  _buildArticlesSection(),
+                  const SizedBox(height: 32),
 
-              _buildPartnershipsSection(),
-              const SizedBox(height: 32),
+                  _buildPartnershipsSection(appState.selectedLanguage),
+                  const SizedBox(height: 32),
 
-              _buildDonationPortal(),
-              const SizedBox(height: 32),
+                  _buildDonationPortal(appState.selectedLanguage),
+                  const SizedBox(height: 32),
 
-              _buildContactSection(),
-            ],
+                  _buildContactSection(appState.selectedLanguage),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHeroSection() {
+  Widget _buildHeroSection(String lang) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -92,18 +102,18 @@ class _AboutUsScreenState extends State<AboutUsScreen>
       ),
       child: Column(
         children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(40),
-            ),
-            child: const Icon(
-              Icons.eco,
-              size: 40,
-              color: Colors.white,
-            ),
+          Image.asset(
+            'assets/images/logo.png',
+            width: 200,
+            height: 200,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(
+                Icons.eco,
+                size: 60,
+                color: Colors.white,
+              );
+            },
           ),
           const SizedBox(height: 16),
           Text(
@@ -126,7 +136,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildMissionSection() {
+  Widget _buildMissionSection(String lang) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -177,7 +187,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildImpactStatistics() {
+  Widget _buildImpactStatistics(String lang) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -289,7 +299,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildHowItWorks() {
+  Widget _buildHowItWorks(String lang) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -491,7 +501,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildPartnershipsSection() {
+  Widget _buildPartnershipsSection(String lang) {
     final partners = [
       {'name': 'GreenGrocer Sdn Bhd', 'type': 'Food Provider'},
       {'name': 'FreshMart Chain', 'type': 'Food Provider'},
@@ -579,7 +589,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildDonationPortal() {
+  Widget _buildDonationPortal(String lang) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -663,7 +673,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildContactSection() {
+  Widget _buildContactSection(String lang) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

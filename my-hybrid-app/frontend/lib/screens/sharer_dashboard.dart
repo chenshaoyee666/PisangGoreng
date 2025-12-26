@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 import '../widgets/bottom_navigation.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/gradient_background.dart';
 import 'food_upload_screen.dart';
 import 'recipes_screen.dart';
 import 'about_us_screen.dart';
@@ -18,34 +22,38 @@ class _SharerDashboardState extends State<SharerDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SmartBite'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {},
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('SmartBite'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.person_outline),
+                onPressed: () {},
+              ),
+            ],
           ),
-        ],
-      ),
-      drawer: const AppDrawer(),
-      body: _buildCurrentScreen(),
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        isSharer: true,
-      ),
+          drawer: const AppDrawer(),
+          body: GradientBackground(child: _buildCurrentScreen(appState)),
+          bottomNavigationBar: CustomBottomNavigation(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            isSharer: true,
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCurrentScreen() {
+  Widget _buildCurrentScreen(AppState appState) {
     switch (_currentIndex) {
       case 0:
-        return _buildHomeScreen();
+        return _buildHomeScreen(appState);
       case 1:
         return const FoodUploadScreen();
       case 2:
@@ -53,11 +61,12 @@ class _SharerDashboardState extends State<SharerDashboard> {
       case 3:
         return _buildAboutScreen();
       default:
-        return _buildHomeScreen();
+        return _buildHomeScreen(appState);
     }
   }
 
-  Widget _buildHomeScreen() {
+  Widget _buildHomeScreen(AppState appState) {
+    final lang = appState.selectedLanguage;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -82,7 +91,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome back, Sharer!',
+                  Translations.get('welcome_back_sharer', lang),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -90,7 +99,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Ready to make a difference today?',
+                  Translations.get('ready_to_help', lang),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.white.withValues(alpha: 0.9),
                   ),
@@ -102,7 +111,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
           const SizedBox(height: 24),
 
           Text(
-            'Your Impact This Month',
+            Translations.get('your_impact', lang),
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -127,7 +136,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                     Expanded(
                       child: _buildEnhancedStatCard(
                         '23',
-                        'Items Shared',
+                        Translations.get('items_shared', lang),
                         Icons.restaurant,
                         AppTheme.primaryGreen,
                       ),
@@ -136,7 +145,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                     Expanded(
                       child: _buildEnhancedStatCard(
                         '47',
-                        'People Helped',
+                        Translations.get('people_helped', lang),
                         Icons.people,
                         AppTheme.accentOrange,
                       ),
@@ -149,7 +158,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                     Expanded(
                       child: _buildEnhancedStatCard(
                         'RM 340',
-                        'Food Value',
+                        Translations.get('food_value', lang),
                         Icons.monetization_on,
                         AppTheme.successGreen,
                       ),
@@ -158,7 +167,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                     Expanded(
                       child: _buildEnhancedStatCard(
                         '8.2 kg',
-                        'Waste Saved',
+                        Translations.get('waste_saved', lang),
                         Icons.eco,
                         AppTheme.primaryGreen,
                       ),
@@ -175,7 +184,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   child: Column(
                     children: [
                       Text(
-                        'Weekly Impact Trend',
+                        Translations.get('weekly_impact', lang),
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -207,7 +216,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
           const SizedBox(height: 24),
 
           Text(
-            'Quick Actions',
+            Translations.get('quick_actions', lang),
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -218,8 +227,8 @@ class _SharerDashboardState extends State<SharerDashboard> {
             children: [
               Expanded(
                 child: _buildActionCard(
-                  'Share Food',
-                  'Upload and share your surplus food',
+                  Translations.get('share_food', lang),
+                  Translations.get('upload_share_food', lang),
                   Icons.camera_alt,
                   AppTheme.primaryGreen,
                   () {
@@ -232,8 +241,8 @@ class _SharerDashboardState extends State<SharerDashboard> {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildActionCard(
-                  'Find Recipes',
-                  'Discover new ways to cook',
+                  Translations.get('find_recipes', lang),
+                  Translations.get('discover_recipes', lang),
                   Icons.menu_book,
                   AppTheme.accentOrange,
                   () {
@@ -249,7 +258,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
           const SizedBox(height: 24),
 
           Text(
-            'Recent Activity',
+            Translations.get('recent_shares', lang),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),

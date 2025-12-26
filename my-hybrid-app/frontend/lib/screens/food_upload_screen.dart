@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 import '../models/food_item.dart';
+import '../widgets/gradient_background.dart';
 import 'delivery_tracking_screen.dart';
 
 class FoodUploadScreen extends StatefulWidget {
@@ -34,67 +38,71 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Share Food'),
-        automaticallyImplyLeading: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Mode Toggle
-            Container(
-              decoration: BoxDecoration(
-                color: AppTheme.cardBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final lang = appState.selectedLanguage;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(Translations.get('share_food', lang)),
+            automaticallyImplyLeading: false,
+          ),
+          body: GradientBackground(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _isScanMode = true),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                          color: _isScanMode ? AppTheme.primaryGreen : Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          'AI Scan',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: _isScanMode ? Colors.white : AppTheme.textPrimary,
-                            fontWeight: FontWeight.w600,
+                  // Mode Toggle
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.cardBackground,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => setState(() => _isScanMode = true),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                              color: _isScanMode ? AppTheme.primaryGreen : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              Translations.get('ai_scan', lang),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: _isScanMode ? Colors.white : AppTheme.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _isScanMode = false),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                          color: !_isScanMode ? AppTheme.primaryGreen : Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          'Manual Input',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: !_isScanMode ? Colors.white : AppTheme.textPrimary,
-                            fontWeight: FontWeight.w600,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => setState(() => _isScanMode = false),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                              color: !_isScanMode ? AppTheme.primaryGreen : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              Translations.get('manual_input', lang),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: !_isScanMode ? Colors.white : AppTheme.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
 
             const SizedBox(height: 24),
 
@@ -144,9 +152,12 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                 ),
                 child: const Text('Upload Food Details', style: TextStyle(color: Colors.white)),
               ),
-          ],
+            ],
+          ),
         ),
-      ),
+        ),
+      );
+      },
     );
   }
 

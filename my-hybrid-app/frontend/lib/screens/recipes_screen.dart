@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 import '../models/recipe.dart';
+import '../widgets/gradient_background.dart';
 import 'recipe_detail_screen.dart';
 
 class RecipesScreen extends StatefulWidget {
@@ -56,46 +60,50 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final lang = appState.selectedLanguage;
+        return Scaffold(
+          body: GradientBackground(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Recipe Discovery',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            Translations.get('recipe_discovery', lang),
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              _showIngredientSearch ? Icons.list : Icons.search,
+                              color: AppTheme.primaryGreen,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showIngredientSearch = !_showIngredientSearch;
+                              if (!_showIngredientSearch) {
+                                _userIngredients.clear();
+                                _filterRecipes();
+                              }
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(
-                        _showIngredientSearch ? Icons.list : Icons.search,
-                        color: AppTheme.primaryGreen,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _showIngredientSearch = !_showIngredientSearch;
-                          if (!_showIngredientSearch) {
-                            _userIngredients.clear();
-                            _filterRecipes();
-                          }
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                
-                const SizedBox(height: 8),
-                
-                if (_showIngredientSearch) ...[
-                  Text(
-                    'What ingredients do you have?',
+                    
+                    const SizedBox(height: 8),
+                    
+                    if (_showIngredientSearch) ...[
+                      Text(
+                        Translations.get('what_ingredients', lang),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppTheme.textSecondary,
                     ),
@@ -241,6 +249,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
           ),
         ],
       ),
+      ),
+      );
+      },
     );
   }
 

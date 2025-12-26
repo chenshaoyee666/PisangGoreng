@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 import '../screens/welcome_screen.dart';
 import '../screens/about_us_screen.dart';
 
@@ -12,6 +13,7 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, appState, child) {
+        final lang = appState.selectedLanguage;
         return Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -29,21 +31,22 @@ class AppDrawer extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const Icon(
-                        Icons.eco,
-                        size: 30,
-                        color: Colors.white,
-                      ),
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.eco,
+                          size: 30,
+                          color: Colors.white,
+                        );
+                      },
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     const Text(
                       'SmartBite',
                       style: TextStyle(
@@ -54,7 +57,7 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Current role: ${appState.isSharer ? 'Sharer' : 'Recipient'}',
+                      '${Translations.get('current_role', lang)}: ${appState.isSharer ? Translations.get('sharer', lang) : Translations.get('recipient', lang)}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -66,14 +69,14 @@ class AppDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.home),
-                title: const Text('Home'),
+                title: Text(Translations.get('home', lang)),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.swap_horiz),
-                title: const Text('Switch Role'),
+                title: Text(Translations.get('switch_role', lang)),
                 onTap: () {
                   Navigator.pop(context);
                   _showRoleSwitchDialog(context);
@@ -82,7 +85,7 @@ class AppDrawer extends StatelessWidget {
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.language),
-                title: const Text('Language'),
+                title: Text(Translations.get('language', lang)),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -96,7 +99,7 @@ class AppDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                title: Text(Translations.get('settings', lang)),
                 onTap: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -106,7 +109,7 @@ class AppDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.info_outline),
-                title: const Text('About'),
+                title: Text(Translations.get('about', lang)),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -118,7 +121,7 @@ class AppDrawer extends StatelessWidget {
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.logout, color: AppTheme.warningRed),
-                title: const Text('Back to Welcome', style: TextStyle(color: AppTheme.warningRed)),
+                title: Text(Translations.get('back_to_welcome', lang), style: const TextStyle(color: AppTheme.warningRed)),
                 onTap: () {
                   Navigator.pop(context);
                   _navigateToWelcome(context);

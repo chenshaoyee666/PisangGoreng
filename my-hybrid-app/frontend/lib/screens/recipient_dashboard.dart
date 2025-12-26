@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/bottom_navigation.dart';
 import '../widgets/fake_map_widget.dart';
+import '../widgets/gradient_background.dart';
 import 'qr_scanner_screen.dart';
 import 'about_us_screen.dart';
 
@@ -18,34 +22,38 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SmartBite'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {},
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('SmartBite'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.person_outline),
+                onPressed: () {},
+              ),
+            ],
           ),
-        ],
-      ),
-      drawer: const AppDrawer(),
-      body: _buildCurrentScreen(),
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        isSharer: false,
-      ),
+          drawer: const AppDrawer(),
+          body: GradientBackground(child: _buildCurrentScreen(appState)),
+          bottomNavigationBar: CustomBottomNavigation(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            isSharer: false,
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCurrentScreen() {
+  Widget _buildCurrentScreen(AppState appState) {
     switch (_currentIndex) {
       case 0:
-        return _buildHomeScreen();
+        return _buildHomeScreen(appState);
       case 1:
         return const QRScannerScreen();
       case 2:
@@ -53,11 +61,12 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
       case 3:
         return _buildAboutScreen();
       default:
-        return _buildHomeScreen();
+        return _buildHomeScreen(appState);
     }
   }
 
-  Widget _buildHomeScreen() {
+  Widget _buildHomeScreen(AppState appState) {
+    final lang = appState.selectedLanguage;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -81,7 +90,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome!',
+                  Translations.get('welcome', lang),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -89,7 +98,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Find fresh food donations near you',
+                  Translations.get('find_fresh_food', lang),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.white.withValues(alpha: 0.9),
                   ),
@@ -119,7 +128,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                   const Icon(Icons.qr_code_scanner, color: Colors.white),
                   const SizedBox(width: 12),
                   Text(
-                    'Scan QR to Claim',
+                    Translations.get('scan_qr_claim', lang),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                     ),
@@ -149,7 +158,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                   const Icon(Icons.location_on, color: Colors.white),
                   const SizedBox(width: 12),
                   Text(
-                    'Find SmartBite Hub',
+                    Translations.get('find_smartbite_hub', lang),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                     ),
@@ -171,7 +180,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'This Week Claimed',
+                  Translations.get('this_week_claimed', lang),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 16),
@@ -179,14 +188,14 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'RM 45 worth of food',
+                      'RM 45 ${Translations.get('worth_of_food', lang)}',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: AppTheme.primaryGreen,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
-                      'RM 200 limit',
+                      'RM 200 ${Translations.get('limit', lang)}',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],

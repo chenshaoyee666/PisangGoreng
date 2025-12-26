@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:provider/provider.dart';
+import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
 
 class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
@@ -15,80 +18,85 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('Scan QR Code', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          IconButton(
-            icon: Icon(
-              cameraController.torchEnabled 
-                ? Icons.flash_on 
-                : Icons.flash_off,
-              color: Colors.white,
-            ),
-            onPressed: () => cameraController.toggleTorch(),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          MobileScanner(
-            controller: cameraController,
-            onDetect: (capture) {
-              if (!isScanning) return;
-              
-              final List<Barcode> barcodes = capture.barcodes;
-              for (final barcode in barcodes) {
-                if (barcode.rawValue != null) {
-                  setState(() {
-                    isScanning = false;
-                  });
-                  _handleQRCode(barcode.rawValue!);
-                  break;
-                }
-              }
-            },
-          ),
-          
-          Container(
-            decoration: ShapeDecoration(
-              shape: QrScannerOverlayShape(
-                borderColor: AppTheme.primaryGreen,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 250,
-              ),
-            ),
-          ),
-          
-          Positioned(
-            bottom: 100,
-            left: 0,
-            right: 0,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Text(
-                'Point your camera at a QR code to claim food',
-                style: TextStyle(
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final lang = appState.selectedLanguage;
+        return Scaffold(
+          backgroundColor: Colors.black,
+          appBar: AppBar(
+            title: Text(Translations.get('scan_qr_code', lang), style: const TextStyle(color: Colors.white)),
+            backgroundColor: Colors.black,
+            iconTheme: const IconThemeData(color: Colors.white),
+            actions: [
+              IconButton(
+                icon: Icon(
+                  cameraController.torchEnabled 
+                    ? Icons.flash_on 
+                    : Icons.flash_off,
                   color: Colors.white,
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
                 ),
-                textAlign: TextAlign.center,
+                onPressed: () => cameraController.toggleTorch(),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              MobileScanner(
+                controller: cameraController,
+                onDetect: (capture) {
+                  if (!isScanning) return;
+                  
+                  final List<Barcode> barcodes = capture.barcodes;
+                  for (final barcode in barcodes) {
+                    if (barcode.rawValue != null) {
+                      setState(() {
+                        isScanning = false;
+                      });
+                      _handleQRCode(barcode.rawValue!);
+                      break;
+                    }
+                  }
+                },
+              ),
+              
+              Container(
+                decoration: ShapeDecoration(
+                  shape: QrScannerOverlayShape(
+                    borderColor: AppTheme.primaryGreen,
+                    borderRadius: 10,
+                    borderLength: 30,
+                    borderWidth: 10,
+                    cutOutSize: 250,
+                  ),
+                ),
+              ),
+              
+              Positioned(
+                bottom: 100,
+                left: 0,
+                right: 0,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.7),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    Translations.get('point_camera_qr', lang),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

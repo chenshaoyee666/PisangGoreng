@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import '../utils/translations.dart';
+import '../widgets/gradient_background.dart';
 import 'sharer_dashboard.dart';
 import 'recipient_dashboard.dart';
 
@@ -10,114 +12,125 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Language Toggle
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildLanguageToggle(context),
-                ],
-              ),
-              
-              const SizedBox(height: 40),
-              
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    width: 220,
-                    height: 220,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final lang = appState.selectedLanguage;
+        
+        return Scaffold(
+          body: GradientBackground(
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Language Toggle
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        _buildLanguageToggle(context),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 40),
+                    
+                    Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/logo.png',
                         width: 220,
                         height: 220,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(110),
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: 220,
+                            height: 220,
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(110),
+                            ),
+                            child: const Icon(
+                              Icons.eco,
+                              size: 100,
+                              color: AppTheme.primaryGreen,
+                            ),
+                          );
+                        },
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0, -15),
+                        child: Text(
+                          Translations.get('app_name', lang),
+                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                            color: AppTheme.primaryGreen,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 42,
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.eco,
-                          size: 100,
-                          color: AppTheme.primaryGreen,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        Translations.get('tagline', lang),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppTheme.textSecondary,
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 0),
+                  
+                  const SizedBox(height: 40),
+                  
                   Text(
-                    'SmartBite',
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: AppTheme.primaryGreen,
-                      fontWeight: FontWeight.w700,
+                    Translations.get('how_to_help', lang),
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  _buildRoleCard(
+                    context,
+                    title: Translations.get('continue_sharer', lang),
+                    subtitle: Translations.get('sharer_subtitle', lang),
+                    icon: Icons.share,
+                    color: AppTheme.primaryGreen,
+                    onTap: () => _selectRole(context, UserRole.sharer),
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  _buildRoleCard(
+                    context,
+                    title: Translations.get('continue_recipient', lang),
+                    subtitle: Translations.get('recipient_subtitle', lang),
+                    icon: Icons.volunteer_activism,
+                    color: AppTheme.accentOrange,
+                    onTap: () => _selectRole(context, UserRole.recipient),
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppTheme.cardBackground,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      Translations.get('together_message', lang),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Reduce waste, share care',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppTheme.textSecondary,
-                    ),
-                  ),
+                  
+                  const SizedBox(height: 24),
                 ],
               ),
-              
-              const SizedBox(height: 40),
-              
-              Text(
-                'How would you like to help?',
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-              
-              const SizedBox(height: 32),
-              
-              _buildRoleCard(
-                context,
-                title: 'Continue as Sharer',
-                subtitle: 'Share your surplus food with the community',
-                icon: Icons.share,
-                color: AppTheme.primaryGreen,
-                onTap: () => _selectRole(context, UserRole.sharer),
-              ),
-              
-              const SizedBox(height: 16),
-              
-              _buildRoleCard(
-                context,
-                title: 'Continue as Recipient',
-                subtitle: 'Find food donations near you',
-                icon: Icons.volunteer_activism,
-                color: AppTheme.accentOrange,
-                onTap: () => _selectRole(context, UserRole.recipient),
-              ),
-              
-              const SizedBox(height: 32),
-              
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.cardBackground,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  'Together, we can reduce food waste and support our community',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              
-              const SizedBox(height: 24),
-            ],
+            ),
           ),
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -140,16 +153,41 @@ class WelcomeScreen extends StatelessWidget {
 
   Widget _buildLanguageButton(String flag, String code, String selected, AppState appState) {
     final isSelected = selected == code;
-    return GestureDetector(
-      onTap: () => appState.setLanguage(code),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryGreen.withValues(alpha: 0.1) : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-          border: isSelected ? Border.all(color: AppTheme.primaryGreen) : null,
+    
+    // Use text labels for better web compatibility
+    final Map<String, String> labels = {
+      'en': 'EN',
+      'zh': '中文',
+      'ms': 'BM',
+    };
+    
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          debugPrint('Language button tapped: $code');
+          appState.setLanguage(code);
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? AppTheme.primaryGreen.withValues(alpha: 0.1) : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? AppTheme.primaryGreen : Colors.grey.shade300,
+              width: isSelected ? 2 : 1,
+            ),
+          ),
+          child: Text(
+            labels[code] ?? code.toUpperCase(),
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: isSelected ? AppTheme.primaryGreen : Colors.grey.shade600,
+            ),
+          ),
         ),
-        child: Text(flag, style: const TextStyle(fontSize: 20)),
       ),
     );
   }
