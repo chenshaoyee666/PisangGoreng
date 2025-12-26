@@ -12,7 +12,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -29,20 +29,28 @@ class WelcomeScreen extends StatelessWidget {
               
               Column(
                 children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    child: const Icon(
-                      Icons.eco,
-                      size: 60,
-                      color: AppTheme.primaryGreen,
-                    ),
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 220,
+                    height: 220,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 220,
+                        height: 220,
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(110),
+                        ),
+                        child: const Icon(
+                          Icons.eco,
+                          size: 100,
+                          color: AppTheme.primaryGreen,
+                        ),
+                      );
+                    },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 0),
                   Text(
                     'SmartBite',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
@@ -60,7 +68,7 @@ class WelcomeScreen extends StatelessWidget {
                 ],
               ),
               
-              const Spacer(),
+              const SizedBox(height: 40),
               
               Text(
                 'How would you like to help?',
