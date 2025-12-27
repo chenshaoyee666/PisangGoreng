@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
-import '../widgets/bottom_navigation.dart';
-import '../widgets/app_drawer.dart';
-import '../widgets/gradient_background.dart';
-import 'food_upload_screen.dart';
-import 'recipes_screen.dart';
-import 'about_us_screen.dart';
+// import 'food_upload_screen.dart'; 
+//import 'recipes_screen.dart';
 
 class SharerDashboard extends StatefulWidget {
   const SharerDashboard({super.key});
@@ -18,51 +13,59 @@ class SharerDashboard extends StatefulWidget {
 }
 
 class _SharerDashboardState extends State<SharerDashboard> {
-  int _currentIndex = 0;
+  // Removed unused field _currentIndex
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AppState>(
-      builder: (context, appState, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('SmartBite'),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.person_outline),
-                onPressed: () {},
+  Widget _buildActionCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        color: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: color.withAlpha((0.1 * 255).toInt()),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(icon, color: color, size: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: color,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),
-          drawer: const AppDrawer(),
-          body: GradientBackground(child: _buildCurrentScreen(appState)),
-          bottomNavigationBar: CustomBottomNavigation(
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            isSharer: true,
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _buildCurrentScreen(AppState appState) {
-    switch (_currentIndex) {
-      case 0:
-        return _buildHomeScreen(appState);
-      case 1:
-        return const FoodUploadScreen();
-      case 2:
-        return _buildRecipesScreen();
-      case 3:
-        return _buildAboutScreen();
-      default:
-        return _buildHomeScreen(appState);
-    }
+  @override
+  Widget build(BuildContext context) {
+    final appState = AppState();
+    return _buildHomeScreen(appState);
   }
 
   Widget _buildHomeScreen(AppState appState) {
@@ -72,33 +75,45 @@ class _SharerDashboardState extends State<SharerDashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Welcome Message at the top
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: Text(
-              'Welcome back, Sharer! Ready to make a difference today?',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
-              ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome back, Sharer !',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Ready to make a difference today?',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
             ),
           ),
-
+          const SizedBox(height: 24),
           Text(
             Translations.get('your_impact', lang),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppTheme.successGreen.withValues(alpha: 0.1),
-                  AppTheme.primaryGreen.withValues(alpha: 0.05),
+                  AppTheme.successGreen.withAlpha((0.1 * 255).toInt()),
+                  AppTheme.primaryGreen.withAlpha((0.05 * 255).toInt()),
                 ],
               ),
               borderRadius: BorderRadius.circular(16),
@@ -109,19 +124,19 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   children: [
                     Expanded(
                       child: _buildEnhancedStatCard(
-                        '23',
-                        Translations.get('items_shared', lang),
-                        Icons.restaurant,
-                        AppTheme.primaryGreen,
+                        value: '23',
+                        label: Translations.get('items_shared', lang),
+                        icon: Icons.restaurant,
+                        color: Color(0xFF1A237E),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: _buildEnhancedStatCard(
-                        '47',
-                        Translations.get('people_helped', lang),
-                        Icons.people,
-                        AppTheme.accentOrange,
+                        value: '47',
+                        label: Translations.get('people_helped', lang),
+                        icon: Icons.people,
+                        color: Color(0xFFDA650B),
                       ),
                     ),
                   ],
@@ -131,19 +146,19 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   children: [
                     Expanded(
                       child: _buildEnhancedStatCard(
-                        'RM 340',
-                        Translations.get('food_value', lang),
-                        Icons.monetization_on,
-                        AppTheme.successGreen,
+                        value: 'RM 340',
+                        label: Translations.get('food_value', lang),
+                        icon: Icons.monetization_on,
+                        color: Color(0xFF1A237E),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: _buildEnhancedStatCard(
-                        '8.2 kg',
-                        Translations.get('waste_saved', lang),
-                        Icons.eco,
-                        AppTheme.primaryGreen,
+                        value: '8.2 kg',
+                        label: Translations.get('waste_saved', lang),
+                        icon: Icons.eco,
+                        color: Color(0xFF1A237E),
                       ),
                     ),
                   ],
@@ -159,9 +174,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                     children: [
                       Text(
                         Translations.get('weekly_impact', lang),
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 12),
                       SizedBox(
@@ -170,13 +183,13 @@ class _SharerDashboardState extends State<SharerDashboard> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            _buildChartBar('Mon', 0.3, AppTheme.primaryGreen),
-                            _buildChartBar('Tue', 0.7, AppTheme.primaryGreen),
-                            _buildChartBar('Wed', 0.5, AppTheme.primaryGreen),
-                            _buildChartBar('Thu', 0.9, AppTheme.accentOrange),
-                            _buildChartBar('Fri', 0.6, AppTheme.primaryGreen),
-                            _buildChartBar('Sat', 0.4, AppTheme.primaryGreen),
-                            _buildChartBar('Sun', 0.8, AppTheme.successGreen),
+                            _buildChartBar(day: 'Mon', height: 0.3, color: Color(0xFF1A237E)),
+                            _buildChartBar(day: 'Tue', height: 0.7, color: Color(0xFF1A237E)),
+                            _buildChartBar(day: 'Wed', height: 0.5, color: Color(0xFF1A237E)),
+                            _buildChartBar(day: 'Thu', height: 0.9, color: Color(0xFFDA650B)),
+                            _buildChartBar(day: 'Fri', height: 0.6, color: Color(0xFF1A237E)),
+                            _buildChartBar(day: 'Sat', height: 0.4, color: Color(0xFF1A237E)),
+                            _buildChartBar(day: 'Sun', height: 0.8, color: Color(0xFF1A237E)),
                           ],
                         ),
                       ),
@@ -186,17 +199,12 @@ class _SharerDashboardState extends State<SharerDashboard> {
               ],
             ),
           ),
-
           const SizedBox(height: 24),
-
           Text(
             Translations.get('quick_actions', lang),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-
           Row(
             children: [
               Expanded(
@@ -205,11 +213,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   Translations.get('upload_share_food', lang),
                   Icons.camera_alt,
                   AppTheme.primaryGreen,
-                  () {
-                    setState(() {
-                      _currentIndex = 1;
-                    });
-                  },
+                  () {},
                 ),
               ),
               const SizedBox(width: 12),
@@ -219,54 +223,45 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   Translations.get('discover_recipes', lang),
                   Icons.menu_book,
                   AppTheme.accentOrange,
-                  () {
-                    setState(() {
-                      _currentIndex = 2;
-                    });
-                  },
+                  () {},
                 ),
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
           Text(
             Translations.get('recent_shares', lang),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
-
           _buildActivityCard(
-            'Chicken Breast',
-            'Delivered to Community Hub',
-            '2 hours ago',
-            AppTheme.successGreen,
+            title: 'Chicken Breast',
+            status: 'Delivered to Community Hub',
+            time: '2 hours ago',
+            statusColor: AppTheme.successGreen,
           ),
           const SizedBox(height: 12),
           _buildActivityCard(
-            'Mixed Vegetables',
-            'Picked up by driver',
-            '1 day ago',
-            AppTheme.accentOrange,
+            title: 'Mixed Vegetables',
+            status: 'Picked up by driver',
+            time: '1 day ago',
+            statusColor: AppTheme.accentOrange,
           ),
           const SizedBox(height: 12),
           _buildActivityCard(
-            'Bread Loaves (3x)',
-            'Claimed by recipients',
-            '2 days ago',
-            AppTheme.successGreen,
+            title: 'Bread Loaves (3x)',
+            status: 'Claimed by recipients',
+            time: '2 days ago',
+            statusColor: AppTheme.successGreen,
           ),
-
           const SizedBox(height: 24),
-
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppTheme.accentOrange.withValues(alpha: 0.1),
-                  AppTheme.primaryGreen.withValues(alpha: 0.1),
+                  Color(0xFFDA650B).withAlpha((0.1 * 255).toInt()),
+                  AppTheme.primaryGreen.withAlpha((0.1 * 255).toInt()),
                 ],
               ),
               borderRadius: BorderRadius.circular(16),
@@ -275,7 +270,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
               children: [
                 const Icon(
                   Icons.emoji_events,
-                  color: AppTheme.accentOrange,
+                  color: Color(0xFFDA650B),
                   size: 48,
                 ),
                 const SizedBox(height: 12),
@@ -283,7 +278,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   'Community Hero!',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.accentOrange,
+                    color: Color(0xFFDA650B),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -295,79 +290,40 @@ class _SharerDashboardState extends State<SharerDashboard> {
               ],
             ),
           ),
-          // ...existing content...
-          // Privacy Card at the bottom
           const SizedBox(height: 32),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: const Color(0xFF1A237E), // dark blue
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.privacy_tip, color: const Color(0xFF64B5F6), size: 32),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Your privacy is protected. Only you can see your claimed items.',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      color: const Color(0xFF64B5F6),
-                      fontWeight: FontWeight.w500,
-                    ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.privacy_tip, color: Colors.black, size: 20),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Your privacy is protected. Only you can see your claimed items.',
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActionCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActivityCard({
+    required String title,
+    required String status,
+    required String time,
+    required Color statusColor,
+  }) {
     return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Icon(icon, color: color, size: 24),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActivityCard(String title, String status, String time, Color statusColor) {
-    return Card(
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -376,17 +332,30 @@ class _SharerDashboardState extends State<SharerDashboard> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: statusColor.withValues(alpha: 0.1),
+                color: statusColor == AppTheme.successGreen || statusColor == AppTheme.primaryGreen
+                    ? Color(0xFF1A237E).withAlpha((0.08 * 255).toInt())
+                    : statusColor.withAlpha((0.08 * 255).toInt()),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Icon(Icons.fastfood, color: statusColor, size: 20),
+              child: Icon(
+                Icons.fastfood,
+                color: statusColor == AppTheme.successGreen || statusColor == AppTheme.primaryGreen
+                    ? Color(0xFF1A237E)
+                    : statusColor,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 16)),
+                  Text(
+                    title,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(fontSize: 16),
+                  ),
                   Text(status, style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
@@ -398,7 +367,12 @@ class _SharerDashboardState extends State<SharerDashboard> {
     );
   }
 
-  Widget _buildEnhancedStatCard(String value, String label, IconData icon, Color color) {
+  Widget _buildEnhancedStatCard({
+    required String value,
+    required String label,
+    required IconData icon,
+    required Color color,
+  }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -406,7 +380,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withAlpha((0.05 * 255).toInt()),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -426,9 +400,9 @@ class _SharerDashboardState extends State<SharerDashboard> {
           ),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppTheme.textSecondary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -436,7 +410,11 @@ class _SharerDashboardState extends State<SharerDashboard> {
     );
   }
 
-  Widget _buildChartBar(String day, double height, Color color) {
+  Widget _buildChartBar({
+    required String day,
+    required double height,
+    required Color color,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -451,19 +429,10 @@ class _SharerDashboardState extends State<SharerDashboard> {
         const SizedBox(height: 4),
         Text(
           day,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontSize: 10,
-          ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
         ),
       ],
     );
   }
-
-  Widget _buildRecipesScreen() {
-    return const RecipesScreen();
-  }
-
-  Widget _buildAboutScreen() {
-    return const AboutUsScreen();
-  }
 }
+  

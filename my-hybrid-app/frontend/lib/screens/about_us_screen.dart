@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
-import '../utils/translations.dart';
 import '../widgets/gradient_background.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -24,13 +23,9 @@ class _AboutUsScreenState extends State<AboutUsScreen>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
     _animationController.forward();
   }
 
@@ -53,32 +48,26 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 32),
                     _buildHeroSection(appState.selectedLanguage),
                     const SizedBox(height: 32),
-
-                  _buildMissionSection(appState.selectedLanguage),
-                  const SizedBox(height: 32),
-
-                  _buildImpactStatistics(appState.selectedLanguage),
-                  const SizedBox(height: 32),
-
-                  _buildHowItWorks(appState.selectedLanguage),
-                  const SizedBox(height: 32),
-
-                  _buildArticlesSection(),
-                  const SizedBox(height: 32),
-
-                  _buildPartnershipsSection(appState.selectedLanguage),
-                  const SizedBox(height: 32),
-
-                  _buildDonationPortal(appState.selectedLanguage),
-                  const SizedBox(height: 32),
-
-                  _buildContactSection(appState.selectedLanguage),
-                ],
+                    _buildMissionSection(appState.selectedLanguage),
+                    const SizedBox(height: 32),
+                    _buildImpactStatistics(appState.selectedLanguage),
+                    const SizedBox(height: 32),
+                    _buildHowItWorks(appState.selectedLanguage),
+                    const SizedBox(height: 32),
+                    _buildArticlesSection(),
+                    const SizedBox(height: 32),
+                    _buildPartnershipsSection(appState.selectedLanguage),
+                    const SizedBox(height: 32),
+                    _buildDonationPortal(appState.selectedLanguage),
+                    const SizedBox(height: 32),
+                    _buildContactSection(appState.selectedLanguage),
+                  ],
+                ),
               ),
             ),
-          ),
           ),
         );
       },
@@ -108,11 +97,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
             height: 200,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
-              return const Icon(
-                Icons.eco,
-                size: 60,
-                color: Colors.white,
-              );
+              return const Icon(Icons.eco, size: 60, color: Colors.white);
             },
           ),
           const SizedBox(height: 16),
@@ -164,7 +149,11 @@ class _AboutUsScreenState extends State<AboutUsScreen>
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.visibility, color: AppTheme.primaryGreen, size: 20),
+                  Icon(
+                    Icons.visibility,
+                    color: AppTheme.primaryGreen,
+                    size: 20,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Vision',
@@ -262,7 +251,12 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildStatCard(String number, String label, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String number,
+    String label,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -289,9 +283,9 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           ),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppTheme.textSecondary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -346,7 +340,13 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     );
   }
 
-  Widget _buildStepCard(int step, String title, String description, IconData icon, Color color) {
+  Widget _buildStepCard(
+    int step,
+    String title,
+    String description,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -405,17 +405,20 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     final articles = [
       {
         'title': '10 Ways to Reduce Food Waste at Home',
-        'description': 'Simple strategies for minimizing food waste in your daily life.',
+        'description':
+            'Simple strategies for minimizing food waste in your daily life.',
         'icon': Icons.home,
       },
       {
         'title': 'The Environmental Impact of Food Waste',
-        'description': 'Understanding how food waste affects our planet and climate.',
+        'description':
+            'Understanding how food waste affects our planet and climate.',
         'icon': Icons.public,
       },
       {
         'title': 'Community Success Stories',
-        'description': 'Inspiring tales of how SmartBite is making a difference.',
+        'description':
+            'Inspiring tales of how SmartBite is making a difference.',
         'icon': Icons.favorite,
       },
       {
@@ -436,14 +439,16 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           ),
         ),
         const SizedBox(height: 16),
-        ...articles.map((article) => Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: _buildArticleCard(
-            article['title'] as String,
-            article['description'] as String,
-            article['icon'] as IconData,
+        ...articles.map(
+          (article) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _buildArticleCard(
+              article['title'] as String,
+              article['description'] as String,
+              article['icon'] as IconData,
+            ),
           ),
-        )),
+        ),
       ],
     );
   }
@@ -532,9 +537,9 @@ class _AboutUsScreenState extends State<AboutUsScreen>
             children: [
               Text(
                 'We collaborate with amazing organizations to maximize our impact',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.textSecondary,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -557,10 +562,11 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                         Flexible(
                           child: Text(
                             partner['name']!,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                ),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -569,10 +575,11 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                         const SizedBox(height: 4),
                         Text(
                           partner['type']!,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppTheme.primaryGreen,
-                            fontSize: 10,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: AppTheme.primaryGreen,
+                                fontSize: 10,
+                              ),
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -658,9 +665,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
       onPressed: () => _showDonationDialog(amount),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.accentOrange,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(vertical: 12),
       ),
       child: Text(
@@ -739,9 +744,9 @@ class _AboutUsScreenState extends State<AboutUsScreen>
             const SizedBox(height: 16),
             Text(
               'This article would contain detailed information about $title. In a full implementation, this would navigate to a dedicated article screen with rich content.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppTheme.textSecondary,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary),
             ),
           ],
         ),
@@ -763,19 +768,15 @@ class _AboutUsScreenState extends State<AboutUsScreen>
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.favorite,
-              color: AppTheme.accentOrange,
-              size: 48,
-            ),
+            const Icon(Icons.favorite, color: AppTheme.accentOrange, size: 48),
             const SizedBox(height: 16),
             Text('Thank you for wanting to donate $amount!'),
             const SizedBox(height: 12),
             Text(
               'In a full implementation, this would connect to a secure payment gateway.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppTheme.textSecondary,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary),
             ),
           ],
         ),

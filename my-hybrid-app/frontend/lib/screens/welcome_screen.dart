@@ -7,6 +7,7 @@ import '../utils/translations.dart';
 import '../widgets/gradient_background.dart';
 import 'sharer_dashboard.dart';
 import 'recipient_dashboard.dart';
+// No ambiguous imports. Only use Flutter's material.dart for widgets.
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -32,46 +33,44 @@ class WelcomeScreen extends StatelessWidget {
                         _buildLanguageToggle(context),
                       ],
                     ),
-                    
-                    const SizedBox(height: 0),
-                    
+                    SizedBox(height: 0),
                     Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo.png',
-                        width: 220,
-                        height: 220,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 220,
-                            height: 220,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(110),
+                      children: [
+                        Image.asset(
+                          'assets/images/logo.png',
+                          width: 220,
+                          height: 220,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 220,
+                              height: 220,
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(110),
+                              ),
+                              child: Icon(
+                                Icons.eco,
+                                size: 100,
+                                color: AppTheme.primaryGreen,
+                              ),
+                            );
+                          },
+                        ),
+                        Transform.translate(
+                          offset: Offset(0, -55),
+                          child: Text(
+                            Translations.get('app_name', lang),
+                            style: GoogleFonts.poppins(
+                              color: Color(0xFF5D4037),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 50,
                             ),
-                            child: const Icon(
-                              Icons.eco,
-                              size: 100,
-                              color: AppTheme.primaryGreen,
-                            ),
-                          );
-                        },
-                      ),
-                      Transform.translate(
-                        offset: const Offset(0, -55),
-                        child: Text(
-                          Translations.get('app_name', lang),
-                          style: GoogleFonts.poppins(
-                            color: const Color(0xFF5D4037),
-                            fontWeight: FontWeight.w700,
-                            fontSize: 50,
                           ),
                         ),
-                      ),
-                      Transform.translate(
-                        offset: const Offset(0, -50),
-                        child: Text(
+                        Transform.translate(
+                          offset: Offset(0, -50),
+                          child: Text(
                           Translations.get('tagline', lang),
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppTheme.textSecondary,

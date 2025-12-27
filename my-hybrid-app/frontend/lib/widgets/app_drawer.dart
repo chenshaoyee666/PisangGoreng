@@ -58,7 +58,7 @@ class AppDrawer extends StatelessWidget {
                   children: [
                     // No spacing above logo
                     Image.asset(
-                      'assets/images/logo2.png',
+                      'assets/images/logo.png',
                       height: 80,
                       width: 80,
                       fit: BoxFit.contain,
@@ -156,7 +156,7 @@ class AppDrawer extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryGreen.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? AppTheme.primaryGreen.withAlpha((0.1 * 255).toInt()) : Colors.transparent,
           borderRadius: BorderRadius.circular(4),
           border: isSelected ? Border.all(color: AppTheme.primaryGreen, width: 1) : null,
         ),
