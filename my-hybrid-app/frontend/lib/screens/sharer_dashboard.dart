@@ -72,43 +72,17 @@ class _SharerDashboardState extends State<SharerDashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Welcome Card
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppTheme.primaryGreen,
-                  AppTheme.primaryGreen.withValues(alpha: 0.8),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          // Welcome Message at the top
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Text(
+              'Welcome back, Sharer! Ready to make a difference today?',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
               ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  Translations.get('welcome_back_sharer', lang),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  Translations.get('ready_to_help', lang),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
-                  ),
-                ),
-              ],
             ),
           ),
-
-          const SizedBox(height: 24),
 
           Text(
             Translations.get('your_impact', lang),
@@ -317,6 +291,35 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   'You\'ve shared over 20 items this month. Thank you for making a difference!',
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          // ...existing content...
+          // Privacy Card at the bottom
+          const SizedBox(height: 32),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1A237E), // dark blue
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.privacy_tip, color: const Color(0xFF64B5F6), size: 32),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Your privacy is protected. Only you can see your claimed items.',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      color: const Color(0xFF64B5F6),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ],
             ),

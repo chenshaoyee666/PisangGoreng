@@ -1,12 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
 import '../screens/welcome_screen.dart';
 import '../screens/about_us_screen.dart';
-
 class AppDrawer extends StatelessWidget {
+    void _showRoleSwitchDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Switch Role'),
+          content: Text('Would you like to switch between Sharer and Recipient roles?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _navigateToWelcome(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryGreen,
+              ),
+              child: Text('Switch Role'),
+            ),
+          ],
+        ),
+      );
+    }
   const AppDrawer({super.key});
 
   @override
@@ -19,109 +44,99 @@ class AppDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               DrawerHeader(
+                padding: EdgeInsets.zero,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      AppTheme.primaryGreen,
-                      AppTheme.primaryGreen.withValues(alpha: 0.8),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFFFFD54F), Colors.white],
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // No spacing above logo
                     Image.asset(
-                      'assets/images/logo.png',
-                      width: 50,
-                      height: 50,
+                      'assets/images/logo2.png',
+                      height: 80,
+                      width: 80,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.eco,
-                          size: 30,
-                          color: Colors.white,
-                        );
-                      },
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    // No spacing between logo and text
+                    Text(
                       'SmartBite',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
+                      style: GoogleFonts.poppins(
+                        color: Color(0xFF5D4037),
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Text(
                       '${Translations.get('current_role', lang)}: ${appState.isSharer ? Translations.get('sharer', lang) : Translations.get('recipient', lang)}',
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: GoogleFonts.poppins(
+                        color: Color(0xFF5D4037),
                         fontSize: 14,
-                        fontFamily: 'Poppins',
                       ),
                     ),
                   ],
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.home),
-                title: Text(Translations.get('home', lang)),
+                leading: Icon(Icons.home),
+                title: Text(Translations.get('home', lang), style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.swap_horiz),
-                title: Text(Translations.get('switch_role', lang)),
+                leading: Icon(Icons.swap_horiz),
+                title: Text(Translations.get('switch_role', lang), style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
                 onTap: () {
                   Navigator.pop(context);
                   _showRoleSwitchDialog(context);
                 },
               ),
-              const Divider(),
+              Divider(),
               ListTile(
-                leading: const Icon(Icons.language),
-                title: Text(Translations.get('language', lang)),
+                leading: Icon(Icons.language),
+                title: Text(Translations.get('language', lang), style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     _buildLanguageButton('🇬🇧', 'en', appState),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     _buildLanguageButton('🇨🇳', 'zh', appState),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     _buildLanguageButton('🇲🇾', 'ms', appState),
                   ],
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.settings),
-                title: Text(Translations.get('settings', lang)),
+                leading: Icon(Icons.settings),
+                title: Text(Translations.get('settings', lang), style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
                 onTap: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Settings feature coming soon!')),
+                    SnackBar(content: Text('Settings feature coming soon!')),
                   );
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.info_outline),
-                title: Text(Translations.get('about', lang)),
+                leading: Icon(Icons.info_outline),
+                title: Text(Translations.get('about', lang), style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AboutUsScreen()),
+                    MaterialPageRoute(builder: (context) => AboutUsScreen()),
                   );
                 },
               ),
-              const Divider(),
+              Divider(),
               ListTile(
-                leading: const Icon(Icons.logout, color: AppTheme.warningRed),
-                title: Text(Translations.get('back_to_welcome', lang), style: const TextStyle(color: AppTheme.warningRed)),
+                leading: Icon(Icons.logout, color: Color(0xFFFF0000)),
+                title: Text(Translations.get('back_to_welcome', lang), style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: Color(0xFFFF0000))),
                 onTap: () {
                   Navigator.pop(context);
                   _navigateToWelcome(context);
@@ -139,39 +154,13 @@ class AppDrawer extends StatelessWidget {
     return GestureDetector(
       onTap: () => appState.setLanguage(code),
       child: Container(
-        padding: const EdgeInsets.all(4),
+        padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryGreen.withValues(alpha: 0.1) : Colors.transparent,
+          color: isSelected ? AppTheme.primaryGreen.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(4),
           border: isSelected ? Border.all(color: AppTheme.primaryGreen, width: 1) : null,
         ),
-        child: Text(flag, style: const TextStyle(fontSize: 16)),
-      ),
-    );
-  }
-
-  void _showRoleSwitchDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Switch Role'),
-        content: const Text('Would you like to switch between Sharer and Recipient roles?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _navigateToWelcome(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryGreen,
-            ),
-            child: const Text('Switch Role'),
-          ),
-        ],
+        child: Text(flag, style: TextStyle(fontSize: 16)),
       ),
     );
   }
@@ -179,7 +168,7 @@ class AppDrawer extends StatelessWidget {
   void _navigateToWelcome(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+      MaterialPageRoute(builder: (context) => WelcomeScreen()),
       (route) => false,
     );
   }

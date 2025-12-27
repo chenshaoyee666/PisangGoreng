@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
@@ -20,7 +21,7 @@ class WelcomeScreen extends StatelessWidget {
           body: GradientBackground(
             child: SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -32,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 0),
                     
                     Column(
                     children: [
@@ -58,69 +59,72 @@ class WelcomeScreen extends StatelessWidget {
                         },
                       ),
                       Transform.translate(
-                        offset: const Offset(0, -15),
+                        offset: const Offset(0, -55),
                         child: Text(
                           Translations.get('app_name', lang),
-                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            color: AppTheme.primaryGreen,
+                          style: GoogleFonts.poppins(
+                            color: const Color(0xFF5D4037),
                             fontWeight: FontWeight.w700,
-                            fontSize: 42,
+                            fontSize: 50,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        Translations.get('tagline', lang),
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.textSecondary,
+                      Transform.translate(
+                        offset: const Offset(0, -50),
+                        child: Text(
+                          Translations.get('tagline', lang),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppTheme.textSecondary,
+                          ),
                         ),
                       ),
                     ],
                   ),
                   
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 0),
                   
                   Text(
                     Translations.get('how_to_help', lang),
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: GoogleFonts.poppins(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF5D4037),
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 8),
                   
                   _buildRoleCard(
                     context,
                     title: Translations.get('continue_sharer', lang),
                     subtitle: Translations.get('sharer_subtitle', lang),
-                    icon: Icons.share,
-                    color: AppTheme.primaryGreen,
+                    imagePath: 'assets/images/sharer.png',
+                    color: const Color(0xFF00296B),
                     onTap: () => _selectRole(context, UserRole.sharer),
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   
                   _buildRoleCard(
                     context,
                     title: Translations.get('continue_recipient', lang),
                     subtitle: Translations.get('recipient_subtitle', lang),
-                    icon: Icons.volunteer_activism,
-                    color: AppTheme.accentOrange,
+                    imagePath: 'assets/images/receipient.png',
+                    color: const Color(0xFFDA6508),
                     onTap: () => _selectRole(context, UserRole.recipient),
                   ),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppTheme.cardBackground,
-                      borderRadius: BorderRadius.circular(12),
+                  Text(
+                    Translations.get('together_message', lang),
+                    style: GoogleFonts.libreBaskerville(
+                      color: const Color(0xFF5D4037),
+                      fontStyle: FontStyle.italic,
+                      fontSize: 16,
                     ),
-                    child: Text(
-                      Translations.get('together_message', lang),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
+                    textAlign: TextAlign.center,
                   ),
                   
                   const SizedBox(height: 24),
@@ -172,10 +176,10 @@ class WelcomeScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.primaryGreen.withValues(alpha: 0.1) : Colors.transparent,
+            color: isSelected ? const Color(0xFF5D4037).withValues(alpha: 0.1) : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? AppTheme.primaryGreen : Colors.grey.shade300,
+              color: isSelected ? const Color(0xFF5D4037) : Colors.grey.shade300,
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -184,7 +188,7 @@ class WelcomeScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: isSelected ? AppTheme.primaryGreen : Colors.grey.shade600,
+              color: isSelected ? const Color(0xFF5D4037) : Colors.grey.shade600,
             ),
           ),
         ),
@@ -196,7 +200,7 @@ class WelcomeScreen extends StatelessWidget {
     BuildContext context, {
     required String title,
     required String subtitle,
-    required IconData icon,
+    required String imagePath,
     required Color color,
     required VoidCallback onTap,
   }) {
@@ -216,10 +220,14 @@ class WelcomeScreen extends StatelessWidget {
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: Icon(
-                  icon,
-                  size: 30,
-                  color: color,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset(
+                    imagePath,
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),

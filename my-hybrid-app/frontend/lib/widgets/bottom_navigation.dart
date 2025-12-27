@@ -29,9 +29,9 @@ class CustomBottomNavigation extends StatelessWidget {
           currentIndex: currentIndex,
           onTap: onTap,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppTheme.primaryGreen,
+          selectedItemColor: Color(0xFF4E342E), // Dark brown
           unselectedItemColor: AppTheme.textSecondary,
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFFFFF176),
           elevation: 8,
           items: items,
         );
