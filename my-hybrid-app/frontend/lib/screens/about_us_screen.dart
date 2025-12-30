@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
-import '../widgets/gradient_background.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -37,41 +36,40 @@ class _AboutUsScreenState extends State<AboutUsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppState>(
-      builder: (context, appState, child) {
-        return Scaffold(
-          body: GradientBackground(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 32),
-                    _buildHeroSection(appState.selectedLanguage),
-                    const SizedBox(height: 32),
-                    _buildMissionSection(appState.selectedLanguage),
-                    const SizedBox(height: 32),
-                    _buildImpactStatistics(appState.selectedLanguage),
-                    const SizedBox(height: 32),
-                    _buildHowItWorks(appState.selectedLanguage),
-                    const SizedBox(height: 32),
-                    _buildArticlesSection(),
-                    const SizedBox(height: 32),
-                    _buildPartnershipsSection(appState.selectedLanguage),
-                    const SizedBox(height: 32),
-                    _buildDonationPortal(appState.selectedLanguage),
-                    const SizedBox(height: 32),
-                    _buildContactSection(appState.selectedLanguage),
-                  ],
+        return Consumer<AppState>(
+          builder: (context, appState, child) {
+            return Scaffold(
+              backgroundColor: const Color(0xFFFFF9EC),
+              body: FadeTransition(
+                opacity: _fadeAnimation,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 32),
+                      _buildHeroSection(appState.selectedLanguage),
+                      const SizedBox(height: 32),
+                      _buildMissionSection(appState.selectedLanguage),
+                      const SizedBox(height: 32),
+                      _buildImpactStatistics(appState.selectedLanguage),
+                      const SizedBox(height: 32),
+                      _buildHowItWorks(appState.selectedLanguage),
+                      const SizedBox(height: 32),
+                      _buildArticlesSection(),
+                      const SizedBox(height: 32),
+                      _buildPartnershipsSection(appState.selectedLanguage),
+                      const SizedBox(height: 32),
+                      _buildDonationPortal(appState.selectedLanguage),
+                      const SizedBox(height: 32),
+                      _buildContactSection(appState.selectedLanguage),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
-      },
-    );
   }
 
   Widget _buildHeroSection(String lang) {
@@ -79,42 +77,48 @@ class _AboutUsScreenState extends State<AboutUsScreen>
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.primaryGreen,
-            AppTheme.primaryGreen.withValues(alpha: 0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFFFDEFC6), // soft yellow background
+        borderRadius: BorderRadius.circular(28),
       ),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
             'assets/images/logo.png',
-            width: 200,
-            height: 200,
+            width: 65,
+            height: 65,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
-              return const Icon(Icons.eco, size: 60, color: Colors.white);
+              return const Icon(Icons.eco, size: 60, color: Color(0xFF4E342E));
             },
           ),
-          const SizedBox(height: 16),
-          Text(
-            'SmartBite',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          const SizedBox(width: 24),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'SmartBite',
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    color: Color(0xFF4E342E),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Reducing Food Waste, Building Community',
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    color: Color(0xFF4E342E),
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Reducing Food Waste, Building Community',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
-            ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -129,7 +133,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Our Mission',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
@@ -151,7 +155,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                 children: [
                   Icon(
                     Icons.visibility,
-                    color: AppTheme.primaryGreen,
+                    color: Color(0xFF4E342E),
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -159,7 +163,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                     'Vision',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppTheme.primaryGreen,
+                      color: Color(0xFF4E342E),
                     ),
                   ),
                 ],
@@ -184,7 +188,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Our Impact This Month',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
@@ -194,7 +198,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
             gradient: LinearGradient(
               colors: [
                 AppTheme.successGreen.withValues(alpha: 0.1),
-                AppTheme.primaryGreen.withValues(alpha: 0.05),
+                const Color(0xFF4E342E).withOpacity(0.05),
               ],
             ),
             borderRadius: BorderRadius.circular(16),
@@ -217,7 +221,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                       '150+',
                       'Active Sharers',
                       Icons.people,
-                      AppTheme.primaryGreen,
+                      Color(0xFF4E342E),
                     ),
                   ),
                 ],
@@ -301,106 +305,28 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'How SmartBite Works',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
-        _buildStepCard(
-          1,
-          'Share Your Food',
-          'Use our AI-powered scanner or manual input to list surplus food items.',
-          Icons.camera_alt,
-          AppTheme.primaryGreen,
-        ),
-        const SizedBox(height: 12),
-        _buildStepCard(
-          2,
-          'Smart Matching',
-          'Our platform connects your donation with recipients in your area.',
-          Icons.connect_without_contact,
-          AppTheme.accentOrange,
-        ),
-        const SizedBox(height: 12),
-        _buildStepCard(
-          3,
-          'Secure Pickup',
-          'Professional drivers collect and deliver food to SmartBite Hubs.',
-          Icons.local_shipping,
-          AppTheme.successGreen,
-        ),
-        const SizedBox(height: 12),
-        _buildStepCard(
-          4,
-          'Community Access',
-          'Recipients scan QR codes at hubs to claim fresh, nutritious meals.',
-          Icons.qr_code_scanner,
-          AppTheme.primaryGreen,
+        // Placeholder for steps (replace with your own step widgets)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              '1. Share Your Food: Use our AI-powered scanner or manual input to list surplus food items.',
+              style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+            ),
+            SizedBox(height: 8),
+            Text(
+              '2. We handle the rest! (Add more steps as needed)',
+              style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+            ),
+          ],
         ),
       ],
     );
   }
-
-  Widget _buildStepCard(
-    int step,
-    String title,
-    String description,
-    IconData icon,
-    Color color,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.cardBackground,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child: Text(
-                step.toString(),
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(icon, color: color, size: 24),
-        ],
-      ),
-    );
-  }
-
   Widget _buildArticlesSection() {
     final articles = [
       {
@@ -435,7 +361,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Educational Resources',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
@@ -468,10 +394,10 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                  color: const Color(0xFF4E342E).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Icon(icon, color: AppTheme.primaryGreen, size: 20),
+                child: Icon(icon, color: Color(0xFF4E342E), size: 20),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -523,7 +449,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Our Partners',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
@@ -577,7 +503,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                           partner['type']!,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: AppTheme.primaryGreen,
+                                color: Color(0xFF4E342E),
                                 fontSize: 10,
                               ),
                           textAlign: TextAlign.center,
@@ -604,7 +530,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Support Our Mission',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
@@ -614,7 +540,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
             gradient: LinearGradient(
               colors: [
                 AppTheme.accentOrange.withValues(alpha: 0.1),
-                AppTheme.primaryGreen.withValues(alpha: 0.05),
+                const Color(0xFF4E342E).withOpacity(0.05),
               ],
             ),
             borderRadius: BorderRadius.circular(16),
@@ -686,7 +612,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Partner With Us',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
@@ -709,7 +635,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                 child: ElevatedButton(
                   onPressed: _showContactForm,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryGreen,
+                    backgroundColor: Color(0xFF4E342E),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -736,11 +662,11 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(title),
+        title: Text(title, style: TextStyle(fontFamily: 'Poppins')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(description),
+            Text(description, style: TextStyle(fontFamily: 'Poppins')),
             const SizedBox(height: 16),
             Text(
               'This article would contain detailed information about $title. In a full implementation, this would navigate to a dedicated article screen with rich content.',
@@ -753,7 +679,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: const Text('Close', style: TextStyle(fontFamily: 'Poppins')),
           ),
         ],
       ),
@@ -764,13 +690,13 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Donation'),
+        title: const Text('Donation', style: TextStyle(fontFamily: 'Poppins')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.favorite, color: AppTheme.accentOrange, size: 48),
             const SizedBox(height: 16),
-            Text('Thank you for wanting to donate $amount!'),
+            Text('Thank you for wanting to donate $amount!', style: TextStyle(fontFamily: 'Poppins')),
             const SizedBox(height: 12),
             Text(
               'In a full implementation, this would connect to a secure payment gateway.',
@@ -783,14 +709,14 @@ class _AboutUsScreenState extends State<AboutUsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text('Cancel', style: TextStyle(fontFamily: 'Poppins')),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Thank you for your $amount donation!'),
+                  content: Text('Thank you for your $amount donation!', style: TextStyle(fontFamily: 'Poppins')),
                   backgroundColor: AppTheme.successGreen,
                 ),
               );
@@ -798,7 +724,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.accentOrange,
             ),
-            child: const Text('Donate', style: TextStyle(color: Colors.white)),
+            child: const Text('Donate', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
           ),
         ],
       ),
@@ -813,7 +739,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Partnership Inquiry'),
+        title: const Text('Partnership Inquiry', style: TextStyle(fontFamily: 'Poppins')),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -848,22 +774,22 @@ class _AboutUsScreenState extends State<AboutUsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text('Cancel', style: TextStyle(fontFamily: 'Poppins')),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Partnership inquiry sent successfully!'),
+                  content: Text('Partnership inquiry sent successfully!', style: TextStyle(fontFamily: 'Poppins')),
                   backgroundColor: AppTheme.successGreen,
                 ),
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryGreen,
+              backgroundColor: Color(0xFF4E342E),
             ),
-            child: const Text('Send', style: TextStyle(color: Colors.white)),
+            child: const Text('Send', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
           ),
         ],
       ),

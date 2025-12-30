@@ -134,15 +134,15 @@ class WelcomeScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 onTap: () => _selectRole(context, UserRole.sharer),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                                   child: Row(
                                     children: [
                                       Image.asset(
                                         'assets/images/sharer.png',
-                                        width: 60,
-                                        height: 60,
+                                        width: 50,
+                                        height: 50,
                                       ),
-                                      const SizedBox(width: 24),
+                                      const SizedBox(width: 14),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,15 +204,15 @@ class WelcomeScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 onTap: () => _selectRole(context, UserRole.recipient),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                                   child: Row(
                                     children: [
                                       Image.asset(
                                         'assets/images/receipient.png',
-                                        width: 60,
-                                        height: 60,
+                                        width: 50,
+                                        height: 50,
                                       ),
-                                      const SizedBox(width: 24),
+                                      const SizedBox(width: 14),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,7 +328,7 @@ class WelcomeScreen extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFFFFEE8C).withOpacity(0.2),
+                    color: const Color(0xFFFFEE8C).withValues(alpha: (0.2 * 255)),
                     blurRadius: 2,
                     offset: const Offset(0, 1),
                   ),
