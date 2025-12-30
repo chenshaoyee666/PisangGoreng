@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_state.dart';
-import '../utils/app_theme.dart';
 import '../utils/translations.dart';
-import '../widgets/gradient_background.dart';
+import '../widgets/card_half_circle_decoration.dart';
+import '../widgets/background_bubbles.dart';
 import 'sharer_dashboard.dart';
 import 'recipient_dashboard.dart';
 // No ambiguous imports. Only use Flutter's material.dart for widgets.
@@ -17,120 +16,268 @@ class WelcomeScreen extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appState, child) {
         final lang = appState.selectedLanguage;
-        
         return Scaffold(
-          body: GradientBackground(
-            child: SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Language Toggle
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildLanguageToggle(context),
-                      ],
-                    ),
-                    SizedBox(height: 0),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/logo.png',
-                          width: 220,
-                          height: 220,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 220,
-                              height: 220,
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(110),
-                              ),
-                              child: Icon(
-                                Icons.eco,
-                                size: 100,
-                                color: AppTheme.primaryGreen,
-                              ),
-                            );
-                          },
-                        ),
-                        Transform.translate(
-                          offset: Offset(0, -55),
-                          child: Text(
-                            Translations.get('app_name', lang),
-                            style: GoogleFonts.poppins(
-                              color: Color(0xFF5D4037),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 50,
+          backgroundColor: const Color(0xFFFFF9EC),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                // Background bubbles
+                BackgroundBubbles(
+                  bubbles: [
+                    BubbleData(top: 40, left: 20, size: 120, color: Color(0xFFFFF6E5)),
+                    BubbleData(bottom: 80, right: 30, size: 80, color: Color(0xFFBCA17A)),
+                    BubbleData(top: 200, right: -40, size: 100, color: Color(0xFFFFEE8C)),
+                    BubbleData(bottom: -30, left: -30, size: 90, color: Color(0xFFF8F4FF)),
+                    // More bubbles on the left side
+                    BubbleData(top: 120, left: -40, size: 70, color: Color(0xFFFFEE8C)),
+                    BubbleData(bottom: 200, left: 10, size: 60, color: Color(0xFFBCA17A)),
+                    BubbleData(top: 320, left: -30, size: 50, color: Color(0xFFF8F4FF)),
+                    BubbleData(bottom: 350, left: 30, size: 40, color: Color(0xFFFFF6E5)),
+                    BubbleData(top: 500, left: 0, size: 80, color: Color(0xFFFFEE8C)),
+                    // Two bubbles to the left of the logo
+                    BubbleData(top: 60, left: 60, size: 36, color: Color(0xFFFFEE8C)),
+                    BubbleData(top: 90, left: 100, size: 22, color: Color(0xFFBCA17A)),
+                  ],
+                ),
+                SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 24),
+                      // Language toggle at the top right, logo above title
+                      Stack(
+                        children: [
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 0, right: 16, left: 16), // add right and left padding for spacing
+                              child: _buildLanguageToggle(context),
                             ),
                           ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(0, -50),
-                          child: Text(
+                          // Centered logo above SmartBite title
+                          Column(
+                            children: [
+                              const SizedBox(height: 32),
+                              Center(
+                                child: Image.asset(
+                                  'assets/images/logo.png',
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Center(
+                                child: Text(
+                                  Translations.get('app_name', lang),
+                                  style: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 40,
+                                    color: Color(0xFF5D4037),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Center(
+                        child: Text(
                           Translations.get('tagline', lang),
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppTheme.textSecondary,
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                            color: Color(0xFFBCA17A),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 32),
+                      Center(
+                        child: Text(
+                          Translations.get('how_to_help', lang),
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 28,
+                            color: Color(0xFF2D2D2D),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      // Sharer Card
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Card(
+                          color: Color(0xFFF8F4FF),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Stack(
+                            children: [
+                              // Half circle decoration
+                              const Positioned(
+                                top: 0,
+                                right: 0,
+                                child: CardHalfCircleDecoration(
+                                  size: 80,
+                                  alignment: Alignment.topRight,
+                                  color: Color(0xFFFFF6E5),
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () => _selectRole(context, UserRole.sharer),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/sharer.png',
+                                        width: 60,
+                                        height: 60,
+                                      ),
+                                      const SizedBox(width: 24),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              Translations.get('continue_sharer', lang),
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 20,
+                                                color: Color(0xFF2D2D2D),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 6),
+                                            Text(
+                                              Translations.get('sharer_subtitle', lang),
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 15,
+                                                color: Color(0xFF7A7A7A),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(Icons.chevron_right, color: Color(0xFFBCA17A)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      // Recipient Card
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Card(
+                          color: Color(0xFFF8F4FF),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Stack(
+                            children: [
+                              // Half circle decoration
+                              const Positioned(
+                                top: 0,
+                                right: 0,
+                                child: CardHalfCircleDecoration(
+                                  size: 80,
+                                  alignment: Alignment.topRight,
+                                  color: Color(0xFFFFF6E5),
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () => _selectRole(context, UserRole.recipient),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/receipient.png',
+                                        width: 60,
+                                        height: 60,
+                                      ),
+                                      const SizedBox(width: 24),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              Translations.get('continue_recipient', lang),
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 20,
+                                                color: Color(0xFF2D2D2D),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 6),
+                                            Text(
+                                              Translations.get('recipient_subtitle', lang),
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 15,
+                                                color: Color(0xFF7A7A7A),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(Icons.chevron_right, color: Color(0xFFBCA17A)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Text(
+                            Translations.get('together_message', lang),
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Color(0xFF7A7A7A),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Center(
+                        child: Text(
+                          '💛',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
                     ],
                   ),
-                  
-                  const SizedBox(height: 0),
-                  
-                  Text(
-                    Translations.get('how_to_help', lang),
-                    style: GoogleFonts.poppins(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF5D4037),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  
-                  const SizedBox(height: 8),
-                  
-                  _buildRoleCard(
-                    context,
-                    title: Translations.get('continue_sharer', lang),
-                    subtitle: Translations.get('sharer_subtitle', lang),
-                    imagePath: 'assets/images/sharer.png',
-                    color: const Color(0xFF00296B),
-                    onTap: () => _selectRole(context, UserRole.sharer),
-                  ),
-                  
-                  const SizedBox(height: 8),
-                  
-                  _buildRoleCard(
-                    context,
-                    title: Translations.get('continue_recipient', lang),
-                    subtitle: Translations.get('recipient_subtitle', lang),
-                    imagePath: 'assets/images/receipient.png',
-                    color: const Color(0xFFDA6508),
-                    onTap: () => _selectRole(context, UserRole.recipient),
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  Text(
-                    Translations.get('together_message', lang),
-                    style: GoogleFonts.libreBaskerville(
-                      color: const Color(0xFF5D4037),
-                      fontStyle: FontStyle.italic,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  
-                  const SizedBox(height: 24),
-                ],
-              ),
+                ),
+                // (Language toggle now in Row above, title and logo below)
+              ],
             ),
-          ),
           ),
         );
       },
@@ -140,17 +287,64 @@ class WelcomeScreen extends StatelessWidget {
   Widget _buildLanguageToggle(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, appState, child) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildLanguageButton('🇬🇧', 'en', appState.selectedLanguage, appState),
-            const SizedBox(width: 8),
-            _buildLanguageButton('🇨🇳', 'zh', appState.selectedLanguage, appState),
-            const SizedBox(width: 8),
-            _buildLanguageButton('🇲🇾', 'ms', appState.selectedLanguage, appState),
-          ],
+        final selected = appState.selectedLanguage;
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4, right: 4), // Add small left and right padding to the row
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildLanguagePill('EN', 'en', selected, appState),
+                const SizedBox(width: 10),
+                _buildLanguagePill('中文', 'zh', selected, appState),
+                const SizedBox(width: 10),
+                _buildLanguagePill('BM', 'ms', selected, appState),
+              ],
+            ),
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildLanguagePill(String label, String code, String selected, AppState appState) {
+    final bool isSelected = selected == code;
+    return GestureDetector(
+      onTap: () => appState.setLanguage(code),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFFFEE8C) : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: isSelected ? const Color(0xFFFFEE8C) : const Color(0xFFD6CBA4),
+            width: 2,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFFFFEE8C).withOpacity(0.2),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                ]
+              : [],
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Color(0xFF5D4037),
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+            fontFamily: 'Poppins',
+          ),
+        ),
+      ),
     );
   }
 

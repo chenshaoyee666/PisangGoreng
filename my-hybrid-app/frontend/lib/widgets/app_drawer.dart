@@ -45,12 +45,8 @@ class AppDrawer extends StatelessWidget {
             children: [
               DrawerHeader(
                 padding: EdgeInsets.zero,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xFFFFD54F), Colors.white],
-                  ),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFFF9EC),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

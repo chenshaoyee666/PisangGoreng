@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import '../utils/app_state.dart';
+import 'package:provider/provider.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
-// import 'food_upload_screen.dart'; 
-//import 'recipes_screen.dart';
+import '../widgets/bottom_navigation.dart';
+import '../widgets/app_drawer.dart';
+import 'about_us_screen.dart';
+import 'food_upload_screen.dart';
+import 'recipes_screen.dart';
+import 'login_screen.dart';
 
 class SharerDashboard extends StatefulWidget {
   const SharerDashboard({super.key});
@@ -13,7 +18,7 @@ class SharerDashboard extends StatefulWidget {
 }
 
 class _SharerDashboardState extends State<SharerDashboard> {
-  // Removed unused field _currentIndex
+  int _currentIndex = 0;
 
   Widget _buildActionCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
     return GestureDetector(
@@ -64,8 +69,58 @@ class _SharerDashboardState extends State<SharerDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = AppState();
-    return _buildHomeScreen(appState);
+    const Color welcomeBg = Color(0xFFFFF9EC);
+    return Scaffold(
+      backgroundColor: welcomeBg,
+      appBar: AppBar(
+        backgroundColor: welcomeBg,
+        elevation: 0,
+        title: const Text('SmartBite', style: TextStyle(color: Colors.black)),
+        iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_outline, color: Colors.black),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+            },
+          ),
+        ],
+      ),
+      drawer: const AppDrawer(),
+      body: Consumer<AppState>(
+        builder: (context, appState, child) {
+          return _buildCurrentScreen(appState);
+        },
+      ),
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        isSharer: true,
+        backgroundColor: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildCurrentScreen(AppState appState) {
+    switch (_currentIndex) {
+      case 0:
+        return _buildHomeScreen(appState);
+      case 1:
+        return FoodUploadScreen();
+      case 2:
+        return RecipesScreen();
+      case 3:
+        return AboutUsScreen();
+      default:
+        return _buildHomeScreen(appState);
+    }
   }
 
   Widget _buildHomeScreen(AppState appState) {
@@ -231,7 +286,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
           const SizedBox(height: 24),
           Text(
             Translations.get('recent_shares', lang),
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontFamily: 'Poppins'),
           ),
           const SizedBox(height: 16),
           _buildActivityCard(
@@ -279,12 +334,13 @@ class _SharerDashboardState extends State<SharerDashboard> {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFDA650B),
+                    fontFamily: 'Poppins',
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'You\'ve shared over 20 items this month. Thank you for making a difference!',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: 'Poppins'),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -354,13 +410,13 @@ class _SharerDashboardState extends State<SharerDashboard> {
                     title,
                     style: Theme.of(
                       context,
-                    ).textTheme.titleLarge?.copyWith(fontSize: 16),
+                    ).textTheme.titleLarge?.copyWith(fontSize: 16, fontFamily: 'Poppins'),
                   ),
-                  Text(status, style: Theme.of(context).textTheme.bodyMedium),
+                  Text(status, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: 'Poppins')),
                 ],
               ),
             ),
-            Text(time, style: Theme.of(context).textTheme.bodyMedium),
+            Text(time, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: 'Poppins')),
           ],
         ),
       ),
@@ -396,13 +452,14 @@ class _SharerDashboardState extends State<SharerDashboard> {
               color: color,
               fontWeight: FontWeight.bold,
               fontSize: 24,
+              fontFamily: 'Poppins',
             ),
           ),
           Text(
             label,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
+            ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary, fontFamily: 'Poppins'),
             textAlign: TextAlign.center,
           ),
         ],
@@ -429,7 +486,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
         const SizedBox(height: 4),
         Text(
           day,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10, fontFamily: 'Poppins'),
         ),
       ],
     );

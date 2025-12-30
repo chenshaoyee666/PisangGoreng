@@ -9,11 +9,14 @@ class CustomBottomNavigation extends StatelessWidget {
   final Function(int) onTap;
   final bool isSharer;
 
+  final Color? backgroundColor;
+
   const CustomBottomNavigation({
     super.key,
     required this.currentIndex,
     required this.onTap,
     required this.isSharer,
+    this.backgroundColor,
   });
 
   @override
@@ -31,7 +34,7 @@ class CustomBottomNavigation extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Color(0xFF4E342E), // Dark brown
           unselectedItemColor: AppTheme.textSecondary,
-          backgroundColor: Color(0xFFFFF176),
+          backgroundColor: backgroundColor ?? Color(0xFFFFF176),
           elevation: 8,
           items: items,
         );
