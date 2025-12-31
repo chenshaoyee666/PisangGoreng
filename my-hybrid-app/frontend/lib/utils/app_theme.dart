@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   // SmartBite Color Palette
   static const Color primaryGreen = Color(0xFF7BC67E);
-  static const Color accentOrange = Color(0xFFF9A03F);
+  static const Color accentOrange = Color(0xFFDA650B);
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color textPrimary = Color(0xFF2E2E2E);
   static const Color textSecondary = Color(0xFF757575);
@@ -17,7 +17,7 @@ class AppTheme {
       primaryColor: primaryGreen,
       scaffoldBackgroundColor: backgroundColor,
       fontFamily: 'Poppins',
-      
+
       appBarTheme: const AppBarTheme(
         backgroundColor: backgroundColor,
         elevation: 0,
@@ -91,7 +91,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: primaryGreen, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
     );
   }
@@ -115,7 +118,7 @@ class AppTheme {
         b + ((ds < 0 ? b : (255 - b)) * ds).round(),
       );
     }
-  final int primaryValue = (255 << 24) | (r << 16) | (g << 8) | b;
-  return MaterialColor(primaryValue, swatch);
+    final int primaryValue = (255 << 24) | (r << 16) | (g << 8) | b;
+    return MaterialColor(primaryValue, swatch);
   }
 }

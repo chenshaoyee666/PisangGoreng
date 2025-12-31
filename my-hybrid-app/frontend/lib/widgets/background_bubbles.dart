@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BackgroundBubbles extends StatelessWidget {
   final List<BubbleData> bubbles;
 
-  const BackgroundBubbles({Key? key, this.bubbles = const []}) : super(key: key);
+  const BackgroundBubbles({super.key, this.bubbles = const []});
 
   @override
   Widget build(BuildContext context) {

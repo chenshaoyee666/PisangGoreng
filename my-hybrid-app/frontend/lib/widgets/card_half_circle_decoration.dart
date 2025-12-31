@@ -6,11 +6,11 @@ class CardHalfCircleDecoration extends StatelessWidget {
   final Color color;
 
   const CardHalfCircleDecoration({
-    Key? key,
+    super.key,
     this.size = 100,
     this.alignment = Alignment.topRight,
     this.color = const Color(0xFFFFF6E5), // Reverted to original color
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

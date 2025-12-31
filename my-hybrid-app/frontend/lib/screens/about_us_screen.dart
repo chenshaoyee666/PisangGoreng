@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
+import 'about_us_background_decoration.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -36,11 +38,14 @@ class _AboutUsScreenState extends State<AboutUsScreen>
 
   @override
   Widget build(BuildContext context) {
-        return Consumer<AppState>(
-          builder: (context, appState, child) {
-            return Scaffold(
-              backgroundColor: const Color(0xFFFFF9EC),
-              body: FadeTransition(
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        return Scaffold(
+          backgroundColor: const Color(0xFFFFF9EC),
+          body: Stack(
+            children: [
+              const AboutUsBackgroundDecoration(),
+              FadeTransition(
                 opacity: _fadeAnimation,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
@@ -63,13 +68,16 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                       _buildDonationPortal(appState.selectedLanguage),
                       const SizedBox(height: 32),
                       _buildContactSection(appState.selectedLanguage),
+                      // ...existing code...
                     ],
                   ),
                 ),
               ),
-            );
-          },
+            ],
+          ),
         );
+      },
+    );
   }
 
   Widget _buildHeroSection(String lang) {
@@ -197,7 +205,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppTheme.successGreen.withValues(alpha: 0.1),
+                Color(0xFF1A237E).withOpacity(0.08), // dark blue tint
                 const Color(0xFF4E342E).withOpacity(0.05),
               ],
             ),
@@ -212,7 +220,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                       '2,500+',
                       'Meals Saved',
                       Icons.restaurant,
-                      AppTheme.successGreen,
+                      Color(0xFF1A237E), // dark blue
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -221,7 +229,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                       '150+',
                       'Active Sharers',
                       Icons.people,
-                      Color(0xFF4E342E),
+                      AppTheme.accentOrange,
                     ),
                   ),
                 ],
@@ -243,7 +251,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                       '12 tons',
                       'Waste Prevented',
                       Icons.eco,
-                      AppTheme.successGreen,
+                      Color(0xFF1A237E), // dark blue
                     ),
                   ),
                 ],
@@ -394,10 +402,10 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF4E342E).withOpacity(0.1),
+                  color: const Color(0xFFDA650B).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Icon(icon, color: Color(0xFF4E342E), size: 20),
+                child: Icon(icon, color: Color(0xFFDA650B), size: 20),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -449,63 +457,79 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           'Our Partners',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins',
             color: Color(0xFF4E342E),
           ),
         ),
         const SizedBox(height: 16),
+        const SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.accentOrange.withOpacity(0.08),
+                const Color(0xFF4E342E).withOpacity(0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'We collaborate with amazing organizations to maximize our impact',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
-                textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Text(
+                  'We collaborate with amazing organizations to maximize our impact',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Poppins',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              const SizedBox(height: 20),
               Wrap(
-                spacing: 12,
-                runSpacing: 12,
+                spacing: 24,
+                runSpacing: 24,
                 children: partners.map((partner) {
                   return Container(
-                    width: (MediaQuery.of(context).size.width - 92) / 2,
-                    height: 80, // Fixed height to prevent overflow
-                    padding: const EdgeInsets.all(12),
+                    width: (MediaQuery.of(context).size.width - 120) / 2,
+                    height: 100,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey.shade200),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
+                    alignment: Alignment.center,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(
-                          child: Text(
-                            partner['name']!,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                ),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                        Text(
+                          partner['name']!,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
+                            color: Color(0xFF4E342E),
                           ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           partner['type']!,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: Color(0xFF4E342E),
-                                fontSize: 10,
-                              ),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppTheme.textSecondary,
+                            fontFamily: 'Poppins',
+                            fontSize: 12,
+                          ),
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -619,7 +643,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppTheme.cardBackground,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(

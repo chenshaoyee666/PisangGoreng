@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartbite/models/food_item.dart';
 import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
@@ -9,11 +10,13 @@ import '../widgets/gradient_background.dart';
 class DeliveryTrackingScreen extends StatefulWidget {
   final String trackingNumber;
   final String foodName;
+  final FoodItem foodItem;
 
   const DeliveryTrackingScreen({
     super.key,
     required this.trackingNumber,
     required this.foodName,
+    required this.foodItem,
   });
 
   @override
