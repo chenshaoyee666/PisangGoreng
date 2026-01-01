@@ -5,7 +5,7 @@ import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
 import '../widgets/fake_map_widget.dart';
-import '../widgets/gradient_background.dart';
+import '../widgets/background_bubbles.dart';
 
 class DeliveryTrackingScreen extends StatefulWidget {
   final String trackingNumber;
@@ -67,17 +67,35 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
       builder: (context, appState, child) {
         final lang = appState.selectedLanguage;
         return Scaffold(
+          backgroundColor: const Color(0xFFFFF9EC),
           appBar: AppBar(
-            title: Text(Translations.get('delivery_tracking', lang)),
+            backgroundColor: const Color(0xFFFFF9EC),
+            title: Text(Translations.get('delivery_tracking', lang), style: const TextStyle(fontFamily: 'Poppins')),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context),
             ),
           ),
-          body: GradientBackground(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
+          body: Stack(
+            children: [
+              // Background bubbles
+              BackgroundBubbles(
+                bubbles: [
+                  BubbleData(top: 10, left: 40, size: 70, color: Color(0xFFFFEE8C)),
+                  BubbleData(top: 20, right: 15, size: 55, color: Color(0xFFBCA17A)),
+                  BubbleData(top: 60, left: 20, size: 100, color: Color(0xFFFFF6E5)),
+                  BubbleData(bottom: 120, right: 30, size: 80, color: Color(0xFFBCA17A)),
+                  BubbleData(top: 180, right: -30, size: 90, color: Color(0xFFFFEE8C)),
+                  BubbleData(bottom: 350, left: -20, size: 70, color: Color(0xFFF8F4FF)),
+                  BubbleData(top: 350, left: 30, size: 65, color: Color(0xFFFFEE8C)),
+                  BubbleData(bottom: 180, left: 15, size: 55, color: Color(0xFFBCA17A)),
+                  BubbleData(top: 550, right: 25, size: 75, color: Color(0xFFF8F4FF)),
+                  BubbleData(bottom: 60, right: -20, size: 60, color: Color(0xFFFFF6E5)),
+                ],
+              ),
+              SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Tracking Header
@@ -85,14 +103,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppTheme.primaryGreen,
-                          AppTheme.primaryGreen.withValues(alpha: 0.8),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                      color: const Color(0xFFFDEFC6),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -101,22 +112,25 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                         Text(
                           Translations.get('food_pickup_progress', lang),
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Colors.white,
+                            color: const Color(0xFF5D4037),
                             fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           '${Translations.get('tracking', lang)}: ${widget.trackingNumber}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: const Color(0xFF5D4037),
+                          fontFamily: 'Poppins',
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '${Translations.get('item', lang)}: ${widget.foodName}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: const Color(0xFF5D4037),
+                          fontFamily: 'Poppins',
                         ),
                       ),
                     ],
@@ -129,6 +143,8 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                   Translations.get('live_tracking', lang),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontFamily: 'Poppins',
+                    color: const Color(0xFF5D4037),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -144,6 +160,8 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               'Pickup Progress',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins',
+                color: const Color(0xFF5D4037),
               ),
             ),
             const SizedBox(height: 16),
@@ -153,7 +171,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               'Processing',
               'Your food donation is being processed',
               Icons.inventory_2,
-              isCompleted: _currentStep >= 0,
+              isCompleted: _currentStep > 0,
               isActive: _currentStep == 0,
             ),
             _buildProgressStep(
@@ -161,7 +179,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               'Driver Assigned',
               'Ahmad (Rider #1249) is on the way',
               Icons.person,
-              isCompleted: _currentStep >= 1,
+              isCompleted: _currentStep > 1,
               isActive: _currentStep == 1,
             ),
             _buildProgressStep(
@@ -169,7 +187,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               'On the Way',
               'Driver is picking up your food',
               Icons.motorcycle,
-              isCompleted: _currentStep >= 2,
+              isCompleted: _currentStep > 2,
               isActive: _currentStep == 2,
             ),
             _buildProgressStep(
@@ -178,7 +196,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               'Food is now available for collection',
               Icons.restaurant,
               isCompleted: _currentStep >= 3,
-              isActive: _currentStep == 3,
+              isActive: false,
             ),
 
             const SizedBox(height: 24),
@@ -186,12 +204,12 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.cardBackground,
+                color: const Color(0xFFF8F8F8),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.access_time, color: AppTheme.accentOrange),
+                  const Icon(Icons.access_time, color: Color(0xFFDA650B)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -201,13 +219,15 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                           'Estimated Completion',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                         Text(
                           _currentStep >= 3 ? 'Completed!' : '${15 - (_currentStep * 3)} minutes',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: _currentStep >= 3 ? AppTheme.successGreen : AppTheme.accentOrange,
+                            color: _currentStep >= 3 ? const Color(0xFF5D4037) : const Color(0xFFDA650B),
                             fontWeight: FontWeight.w500,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                       ],
@@ -223,9 +243,9 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                  color: const Color(0xFF5D4037).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.primaryGreen.withValues(alpha: 0.3)),
+                  border: Border.all(color: const Color(0xFF5D4037).withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,28 +254,29 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                       'Driver Contact',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.primaryGreen,
+                        color: const Color(0xFF5D4037),
+                        fontFamily: 'Poppins',
                       ),
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.person, color: AppTheme.primaryGreen, size: 20),
+                        const Icon(Icons.person, color: Color(0xFF5D4037), size: 20),
                         const SizedBox(width: 8),
                         Text(
                           'Ahmad (Rider #1249)',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: 'Poppins'),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.phone, color: AppTheme.primaryGreen, size: 20),
+                        const Icon(Icons.phone, color: Color(0xFF5D4037), size: 20),
                         const SizedBox(width: 8),
                         Text(
                           '+60 12-345 6789',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: 'Poppins'),
                         ),
                       ],
                     ),
@@ -269,30 +290,31 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.successGreen.withValues(alpha: 0.1),
+                  color: const Color(0xFF5D4037).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.successGreen.withValues(alpha: 0.3)),
+                  border: Border.all(color: const Color(0xFF5D4037).withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   children: [
                     const Icon(
                       Icons.check_circle,
-                      color: AppTheme.successGreen,
+                      color: Color(0xFF5D4037),
                       size: 48,
                     ),
                     const SizedBox(height: 12),
                     Text(
                       'Food Successfully Delivered!',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.successGreen,
+                        color: const Color(0xFF5D4037),
                         fontWeight: FontWeight.w600,
+                        fontFamily: 'Poppins',
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Your food is now available at Central Hub for collection by recipients.',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: 'Poppins'),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -308,7 +330,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryGreen,
+                  backgroundColor: const Color(0xFF5D4037),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: Text(
@@ -317,6 +339,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    fontFamily: 'Poppins',
                   ),
                 ),
               ),
@@ -324,7 +347,8 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
           ],
         ),
       ),
-      ),
+            ],
+          ),
       );
       },
     );
@@ -339,9 +363,9 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
     required bool isActive,
   }) {
     final Color stepColor = isCompleted
-        ? AppTheme.successGreen
+        ? const Color(0xFF5D4037)
         : isActive
-            ? AppTheme.accentOrange
+            ? const Color(0xFFDA650B)
             : Colors.grey;
 
     return Padding(
@@ -372,6 +396,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: stepColor,
+                    fontFamily: 'Poppins',
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -379,6 +404,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
                   description,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppTheme.textSecondary,
+                    fontFamily: 'Poppins',
                   ),
                 ),
               ],
@@ -390,7 +416,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
               height: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.accentOrange),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFDA650B)),
               ),
             ),
           ],

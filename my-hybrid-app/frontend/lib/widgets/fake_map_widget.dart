@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/app_theme.dart';
 
 class FakeMapWidget extends StatelessWidget {
   final bool showHubs;
@@ -19,7 +18,7 @@ class FakeMapWidget extends StatelessWidget {
       width: double.infinity,
       height: 400,
       decoration: BoxDecoration(
-        color: Colors.green.shade100,
+        color: const Color(0xFFFEF5E5),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),
@@ -130,7 +129,7 @@ class MapBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.grey.shade400
+      ..color = const Color(0xFFD7C5B3)
       ..strokeWidth = 3;
 
     canvas.drawLine(
@@ -249,7 +248,7 @@ class SmartBiteHubMarker extends StatelessWidget {
           width: 16,
           height: 16,
           decoration: const BoxDecoration(
-            color: AppTheme.primaryGreen,
+            color: Color(0xFF5D4037),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
@@ -268,9 +267,9 @@ class SmartBiteHubMarker extends StatelessWidget {
         const SizedBox(height: 4),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryGreen,
-            borderRadius: BorderRadius.circular(4),
+          decoration: const BoxDecoration(
+            color: Color(0xFF5D4037),
+            borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -310,7 +309,7 @@ class RiderMarker extends StatelessWidget {
           width: 14,
           height: 14,
           decoration: const BoxDecoration(
-            color: AppTheme.accentOrange,
+            color: Color(0xFFDA650B),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
@@ -330,7 +329,7 @@ class RiderMarker extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
           decoration: BoxDecoration(
-            color: AppTheme.accentOrange,
+            color: const Color(0xFFDA650B),
             borderRadius: BorderRadius.circular(3),
           ),
           child: const Text(

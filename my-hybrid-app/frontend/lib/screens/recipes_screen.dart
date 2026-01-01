@@ -151,6 +151,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                             Translations.get('what_ingredients', lang),
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: AppTheme.textSecondary,
+                              fontFamily: 'Poppins',
                             ),
                           ),
                           const SizedBox(height: 12),
@@ -161,8 +162,21 @@ class _RecipesScreenState extends State<RecipesScreen> {
                                   controller: _ingredientController,
                                   decoration: InputDecoration(
                                     hintText: 'Enter ingredient (e.g., chicken, rice)',
-                                    border: OutlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(color: Color(0xFF5D4037), width: 1.5),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(color: Color(0xFF5D4037), width: 2),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(color: Color(0xFF5D4037), width: 1.5),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(color: Color(0xFF5D4037), width: 2),
                                     ),
                                     contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 12,
@@ -176,7 +190,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                               ElevatedButton(
                                 onPressed: () => _addIngredient(_ingredientController.text),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppTheme.primaryGreen,
+                                  backgroundColor: const Color(0xFF5D4037),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -192,11 +206,11 @@ class _RecipesScreenState extends State<RecipesScreen> {
                               runSpacing: 4,
                               children: _userIngredients.map((ingredient) {
                                 return Chip(
-                                  label: Text(ingredient),
+                                  label: Text(ingredient, style: const TextStyle(fontFamily: 'Poppins')),
                                   onDeleted: () => _removeIngredient(ingredient),
                                   deleteIcon: const Icon(Icons.close, size: 16),
                                   backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                                  deleteIconColor: AppTheme.primaryGreen,
+                                  deleteIconColor: const Color(0xFF5D4037),
                                 );
                               }).toList(),
                             ),
@@ -207,6 +221,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                               'Find delicious recipes using your ingredients',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: AppTheme.textSecondary,
+                                fontFamily: 'Poppins',
                               ),
                             ),
                           ],
@@ -235,11 +250,16 @@ class _RecipesScreenState extends State<RecipesScreen> {
                                 _filterRecipes();
                               });
                             },
-                            selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.2),
-                            checkmarkColor: AppTheme.primaryGreen,
+                            selectedColor: const Color(0xFF5D4037).withValues(alpha: 0.2),
+                            checkmarkColor: const Color(0xFF5D4037),
                             labelStyle: TextStyle(
-                              color: isSelected ? AppTheme.primaryGreen : AppTheme.textSecondary,
+                              color: isSelected ? const Color(0xFF5D4037) : AppTheme.textSecondary,
                               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                              fontFamily: 'Poppins',
+                            ),
+                            side: BorderSide(
+                              color: isSelected ? const Color(0xFF5D4037) : Colors.grey.shade300,
+                              width: 1,
                             ),
                           ),
                         );
@@ -255,6 +275,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                           '${_filteredRecipes.length} recipes found',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppTheme.textSecondary,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                         if (_userIngredients.isNotEmpty) ...[
@@ -266,7 +287,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                                 _filterRecipes();
                               });
                             },
-                            child: const Text('Clear ingredients'),
+                            child: const Text('Clear ingredients', style: TextStyle(fontFamily: 'Poppins')),
                           ),
                         ],
                       ],
@@ -309,6 +330,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
             'No recipes found',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppTheme.textSecondary,
+              fontFamily: 'Poppins',
             ),
           ),
           const SizedBox(height: 8),
@@ -318,6 +340,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 : 'Try selecting a different category',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppTheme.textSecondary,
+              fontFamily: 'Poppins',
             ),
             textAlign: TextAlign.center,
           ),
@@ -474,7 +497,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                                                                       ),
                                                                       child: const Icon(
                                                                         Icons.restaurant,
-                                                                        color: AppTheme.primaryGreen,
+                                                                        color: Color(0xFF5D4037),
                                                                         size: 40,
                                                                       ),
                                                                     );
@@ -494,6 +517,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                       recipe.title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
+                        fontFamily: 'Poppins',
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -503,8 +527,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
                     Text(
                       recipe.category,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppTheme.primaryGreen,
+                        color: const Color(0xFF5D4037),
                         fontWeight: FontWeight.w500,
+                        fontFamily: 'Poppins',
                       ),
                     ),
                     
@@ -522,6 +547,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                           '${recipe.cookTimeMinutes} min',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppTheme.textSecondary,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -535,6 +561,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                           recipe.difficulty,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: _getDifficultyColor(recipe.difficulty),
+                            fontFamily: 'Poppins',
                           ),
                         ),
                     ],
@@ -548,14 +575,15 @@ class _RecipesScreenState extends State<RecipesScreen> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.successGreen.withValues(alpha: 0.1),
+                          color: const Color(0xFF5D4037).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           '${recipe.matchPercentage}% match',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppTheme.successGreen,
+                            color: const Color(0xFF5D4037),
                             fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                       ),
@@ -592,9 +620,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
   Color _getDifficultyColor(String difficulty) {
     switch (difficulty.toLowerCase()) {
       case 'easy':
-        return AppTheme.successGreen;
+        return const Color(0xFF5D4037);
       case 'medium':
-        return AppTheme.accentOrange;
+        return const Color(0xFFDA650B);
       case 'hard':
         return AppTheme.warningRed;
       default:

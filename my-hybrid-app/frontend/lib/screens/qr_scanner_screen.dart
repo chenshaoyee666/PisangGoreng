@@ -24,7 +24,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         return Scaffold(
           backgroundColor: Colors.black,
           appBar: AppBar(
-            title: Text(Translations.get('scan_qr_code', lang), style: const TextStyle(color: Colors.white)),
+            title: Text(Translations.get('scan_qr_code', lang), style: const TextStyle(color: Colors.white, fontFamily: 'Poppins')),
             backgroundColor: Colors.black,
             iconTheme: const IconThemeData(color: Colors.white),
             actions: [
@@ -62,7 +62,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
               Container(
                 decoration: ShapeDecoration(
                   shape: QrScannerOverlayShape(
-                    borderColor: AppTheme.primaryGreen,
+                    borderColor: const Color(0xFFDA650B),
                     borderRadius: 10,
                     borderLength: 30,
                     borderWidth: 10,
@@ -113,12 +113,12 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppTheme.successGreen.withValues(alpha: 0.1),
+                color: const Color(0xFFDA650B).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(40),
               ),
               child: const Icon(
                 Icons.check_circle,
-                color: AppTheme.successGreen,
+                color: Color(0xFFDA650B),
                 size: 50,
               ),
             ),
@@ -151,7 +151,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                   Navigator.of(context).pop(); // Go back to dashboard
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryGreen,
+                  backgroundColor: const Color(0xFFDA650B),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
