@@ -42,26 +42,131 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               width: double.infinity,
               child: Stack(
                 children: [
-                  Image.asset(
-                    widget.recipe.imageUrl,
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 250,
-                        width: double.infinity,
-                        color: AppTheme.cardBackground,
-                        child: const Center(
-                          child: Icon(
-                            Icons.restaurant,
-                            color: AppTheme.primaryGreen,
-                            size: 80,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  widget.recipe.title == 'Leftover Rice Breakfast Bowl'
+                      ? Image.asset(
+                          'assets/images/leftover rice bowl.jpg',
+                          height: 250,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : widget.recipe.title == 'Banana Pancakes'
+                          ? Image.asset(
+                              'assets/images/banana pancakes.jpg',
+                              height: 250,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )
+                          : widget.recipe.title == 'Veggie Scramble'
+                              ? Image.asset(
+                                  'assets/images/veggie scramble.jpg',
+                                  height: 250,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                )
+                              : widget.recipe.title == 'Leftover Chicken Fried Rice'
+                                  ? Image.asset(
+                                      'assets/images/chicken fried rice.webp',
+                                      height: 250,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : widget.recipe.title == 'Quick Vegetable Soup'
+                                      ? Image.asset(
+                                          'assets/images/quick vege soup.webp',
+                                          height: 250,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : widget.recipe.title == 'Pasta with Leftover Meat'
+                                          ? Image.asset(
+                                              'assets/images/pasta.jpg',
+                                              height: 250,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : widget.recipe.title == 'Grain Bowl with Roasted Vegetables'
+                                              ? Image.asset(
+                                                  'assets/images/grain bowl.webp',
+                                                  height: 250,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : widget.recipe.title == 'One-Pot Chicken and Rice'
+                                                  ? Image.asset(
+                                                      'assets/images/one pot.jpeg',
+                                                      height: 250,
+                                                      width: double.infinity,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : widget.recipe.title == 'Vegetable Stir-fry'
+                                                      ? Image.asset(
+                                                          'assets/images/vege stir fry.webp',
+                                                          height: 250,
+                                                          width: double.infinity,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : widget.recipe.title == 'Fish with Lemon Herbs'
+                                                          ? Image.asset(
+                                                              'assets/images/fish.webp',
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                      : widget.recipe.title == 'Fruit and Nut Energy Balls'
+                                                          ? Image.asset(
+                                                              'assets/images/ball.webp',
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                      : widget.recipe.title == 'Vegetable Chips'
+                                                          ? Image.asset(
+                                                              'assets/images/vege chips.jpg',
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                      : widget.recipe.title == 'Quick Hummus'
+                                                          ? Image.asset(
+                                                              'assets/images/hummas.jpg',
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                      : widget.recipe.title == 'Banana Nice Cream'
+                                                          ? Image.asset(
+                                                              'assets/images/banana cream.jpg',
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                      : widget.recipe.title == 'No-Bake Chocolate Oat Cookies'
+                                                          ? Image.asset(
+                                                              'assets/images/cookies.jpg',
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.asset(
+                                                              widget.recipe.imageUrl,
+                                                              height: 250,
+                                                              width: double.infinity,
+                                                              fit: BoxFit.cover,
+                                                              errorBuilder: (context, error, stackTrace) {
+                                                                return Container(
+                                                                  height: 250,
+                                                                  width: double.infinity,
+                                                                  color: AppTheme.cardBackground,
+                                                                  child: const Center(
+                                                                    child: Icon(
+                                                                      Icons.restaurant,
+                                                                      color: AppTheme.primaryGreen,
+                                                                      size: 80,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -108,6 +213,40 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                    // Ingredient Input Row
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Add ingredient',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF4E342E), width: 1.5),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF4E342E), width: 2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF4E342E),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
                   // Recipe Info
                   Row(
                     children: [

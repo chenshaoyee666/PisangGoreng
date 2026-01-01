@@ -4,8 +4,44 @@ import '../utils/app_state.dart';
 import '../utils/app_theme.dart';
 import '../utils/translations.dart';
 import '../models/recipe.dart';
-import '../widgets/gradient_background.dart';
 import 'recipe_detail_screen.dart';
+
+// Custom painter for background bubbles
+class _BubbleBackgroundPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..isAntiAlias = true;
+
+    // Original bubbles
+    paint.color = const Color(0xFFFFE0B2).withOpacity(0.4); // light orange
+    canvas.drawCircle(Offset(size.width * 0.2, size.height * 0.15), 60, paint);
+
+    paint.color = const Color(0xFFB2DFDB).withOpacity(0.4); // light teal
+    canvas.drawCircle(Offset(size.width * 0.8, size.height * 0.10), 40, paint);
+
+    paint.color = const Color(0xFFFFF9C4).withOpacity(0.4); // light yellow
+    canvas.drawCircle(Offset(size.width * 0.7, size.height * 0.7), 80, paint);
+
+    paint.color = const Color(0xFFD1C4E9).withOpacity(0.4); // light purple
+    canvas.drawCircle(Offset(size.width * 0.1, size.height * 0.8), 50, paint);
+
+    // New bubbles
+    // Middle bubble
+    paint.color = const Color(0xFFB2DFDB).withOpacity(0.4); // light teal
+    canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.5), 35, paint);
+
+    // Bottom left bubble
+    paint.color = const Color(0xFFFFE0B2).withOpacity(0.4); // light orange
+    canvas.drawCircle(Offset(size.width * 0.18, size.height * 0.97), 40, paint);
+
+    // Bottom right bubble
+    paint.color = const Color(0xFFD1C4E9).withOpacity(0.4); // light purple
+    canvas.drawCircle(Offset(size.width * 0.85, size.height * 0.93), 32, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
 
 class RecipesScreen extends StatefulWidget {
   const RecipesScreen({super.key});
@@ -64,193 +100,196 @@ class _RecipesScreenState extends State<RecipesScreen> {
       builder: (context, appState, child) {
         final lang = appState.selectedLanguage;
         return Scaffold(
-          body: GradientBackground(
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+          backgroundColor: const Color(0xFFFFF9EC),
+          body: Stack(
+            children: [
+              // Bubbles background
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: _BubbleBackgroundPainter(),
+                ),
+              ),
+              // Main content
+              Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Translations.get('recipe_discovery', lang),
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
+                                color: Color(0xFF4E342E), // dark brown
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                _showIngredientSearch ? Icons.list : Icons.search,
+                                color: Color(0xFF4E342E), // dark brown
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _showIngredientSearch = !_showIngredientSearch;
+                                  if (!_showIngredientSearch) {
+                                    _userIngredients.clear();
+                                    _filterRecipes();
+                                  }
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        if (_showIngredientSearch) ...[
                           Text(
-                            Translations.get('recipe_discovery', lang),
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+                            Translations.get('what_ingredients', lang),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppTheme.textSecondary,
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              _showIngredientSearch ? Icons.list : Icons.search,
-                              color: AppTheme.primaryGreen,
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _ingredientController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter ingredient (e.g., chicken, rice)',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                  ),
+                                  onSubmitted: _addIngredient,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () => _addIngredient(_ingredientController.text),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppTheme.primaryGreen,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Icon(Icons.add, color: Colors.white),
+                              ),
+                            ],
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _showIngredientSearch = !_showIngredientSearch;
-                              if (!_showIngredientSearch) {
-                                _userIngredients.clear();
-                                _filterRecipes();
-                              }
-                            });
-                          },
-                        ),
+                          const SizedBox(height: 12),
+                          if (_userIngredients.isNotEmpty) ...[
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 4,
+                              children: _userIngredients.map((ingredient) {
+                                return Chip(
+                                  label: Text(ingredient),
+                                  onDeleted: () => _removeIngredient(ingredient),
+                                  deleteIcon: const Icon(Icons.close, size: 16),
+                                  backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                                  deleteIconColor: AppTheme.primaryGreen,
+                                );
+                              }).toList(),
+                            ),
+                            const SizedBox(height: 8),
+                          ]
+                          else ...[
+                            Text(
+                              'Find delicious recipes using your ingredients',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppTheme.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ],
                       ],
                     ),
-                    
-                    const SizedBox(height: 8),
-                    
-                    if (_showIngredientSearch) ...[
-                      Text(
-                        Translations.get('what_ingredients', lang),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppTheme.textSecondary,
-                    ),
                   ),
-                  const SizedBox(height: 12),
-                  
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _ingredientController,
-                          decoration: InputDecoration(
-                            hintText: 'Enter ingredient (e.g., chicken, rice)',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                          ),
-                          onSubmitted: _addIngredient,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () => _addIngredient(_ingredientController.text),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Icon(Icons.add, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 12),
-                  
-                  if (_userIngredients.isNotEmpty) ...[
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 4,
-                      children: _userIngredients.map((ingredient) {
-                        return Chip(
-                          label: Text(ingredient),
-                          onDeleted: () => _removeIngredient(ingredient),
-                          deleteIcon: const Icon(Icons.close, size: 16),
-                          backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                          deleteIconColor: AppTheme.primaryGreen,
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ] else ...[
-                  Text(
-                    'Find delicious recipes using your ingredients',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppTheme.textSecondary,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          
-          Container(
-            height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: RecipeDatabase.getAllCategories().length,
-              itemBuilder: (context, index) {
-                final category = RecipeDatabase.getAllCategories()[index];
-                final isSelected = _selectedCategory == category;
-                
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: FilterChip(
-                    label: Text(category),
-                    selected: isSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        _selectedCategory = category;
-                        _filterRecipes();
-                      });
-                    },
-                    selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.2),
-                    checkmarkColor: AppTheme.primaryGreen,
-                    labelStyle: TextStyle(
-                      color: isSelected ? AppTheme.primaryGreen : AppTheme.textSecondary,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Text(
-                  '${_filteredRecipes.length} recipes found',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.textSecondary,
-                  ),
-                ),
-                if (_userIngredients.isNotEmpty) ...[
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _userIngredients.clear();
-                        _filterRecipes();
-                      });
-                    },
-                    child: const Text('Clear ingredients'),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          
-          const SizedBox(height: 8),
-          
-          Expanded(
-            child: _filteredRecipes.isEmpty
-                ? _buildEmptyState()
-                : ListView.builder(
+                  // Move these widgets inside the main Column's children
+                  Container(
+                    height: 50,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: _filteredRecipes.length,
-                    itemBuilder: (context, index) {
-                      final recipe = _filteredRecipes[index];
-                      return _buildRecipeCard(recipe);
-                    },
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: RecipeDatabase.getAllCategories().length,
+                      itemBuilder: (context, index) {
+                        final category = RecipeDatabase.getAllCategories()[index];
+                        final isSelected = _selectedCategory == category;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: FilterChip(
+                            label: Text(category),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              setState(() {
+                                _selectedCategory = category;
+                                _filterRecipes();
+                              });
+                            },
+                            selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.2),
+                            checkmarkColor: AppTheme.primaryGreen,
+                            labelStyle: TextStyle(
+                              color: isSelected ? AppTheme.primaryGreen : AppTheme.textSecondary,
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Text(
+                          '${_filteredRecipes.length} recipes found',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppTheme.textSecondary,
+                          ),
+                        ),
+                        if (_userIngredients.isNotEmpty) ...[
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _userIngredients.clear();
+                                _filterRecipes();
+                              });
+                            },
+                            child: const Text('Clear ingredients'),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: _filteredRecipes.isEmpty
+                        ? _buildEmptyState()
+                        : ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: _filteredRecipes.length,
+                            itemBuilder: (context, index) {
+                              final recipe = _filteredRecipes[index];
+                              return _buildRecipeCard(recipe);
+                            },
+                          ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
-      ),
-      );
+        );
       },
     );
   }
@@ -315,27 +354,132 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    recipe.imageUrl,
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.restaurant,
-                          color: AppTheme.primaryGreen,
-                          size: 40,
-                        ),
-                      );
-                    },
-                  ),
+                  child: recipe.title == 'Leftover Rice Breakfast Bowl'
+                      ? Image.asset(
+                          'assets/images/leftover rice bowl.jpg',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        )
+                      : recipe.title == 'Banana Pancakes'
+                          ? Image.asset(
+                              'assets/images/banana pancakes.jpg',
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                            )
+                          : recipe.title == 'Veggie Scramble'
+                              ? Image.asset(
+                                  'assets/images/veggie scramble.jpg',
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                )
+                              : recipe.title == 'Leftover Chicken Fried Rice'
+                                  ? Image.asset(
+                                      'assets/images/chicken fried rice.webp',
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : recipe.title == 'Quick Vegetable Soup'
+                                      ? Image.asset(
+                                          'assets/images/quick vege soup.webp',
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : recipe.title == 'Pasta with Leftover Meat'
+                                          ? Image.asset(
+                                              'assets/images/pasta.jpg',
+                                              width: 80,
+                                              height: 80,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : recipe.title == 'Grain Bowl with Roasted Vegetables'
+                                              ? Image.asset(
+                                                  'assets/images/grain bowl.webp',
+                                                  width: 80,
+                                                  height: 80,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : recipe.title == 'One-Pot Chicken and Rice'
+                                                  ? Image.asset(
+                                                      'assets/images/one pot.jpeg',
+                                                      width: 80,
+                                                      height: 80,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : recipe.title == 'Vegetable Stir-fry'
+                                                      ? Image.asset(
+                                                          'assets/images/vege stir fry.webp',
+                                                          width: 80,
+                                                          height: 80,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : recipe.title == 'Fish with Lemon Herbs'
+                                                          ? Image.asset(
+                                                              'assets/images/fish.webp',
+                                                              width: 80,
+                                                              height: 80,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : recipe.title == 'Fruit and Nut Energy Balls'
+                           ? Image.asset(
+                               'assets/images/ball.webp',
+                               width: 80,
+                               height: 80,
+                               fit: BoxFit.cover,
+                             )
+                                                          : recipe.title == 'Vegetable Chips'
+                                                              ? Image.asset(
+                                                                  'assets/images/vege chips.jpg',
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  fit: BoxFit.cover,
+                                                                )
+                                                          : recipe.title == 'Quick Hummus'
+                                                                ? Image.asset(
+                                                                    'assets/images/hummas.jpg',
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  fit: BoxFit.cover,
+                                                                )
+                                                          : recipe.title == 'Banana Nice Cream'
+                                                              ? Image.asset(
+                                                                  'assets/images/banana cream.jpg',
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  fit: BoxFit.cover,
+                                                                )
+                                                          : recipe.title == 'No-Bake Chocolate Oat Cookies'
+                                                              ? Image.asset(
+                                                                  'assets/images/cookies.jpg',
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  fit: BoxFit.cover,
+                                                                )
+                                                              : Image.asset(
+                                                                  recipe.imageUrl,
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  fit: BoxFit.cover,
+                                                                  errorBuilder: (context, error, stackTrace) {
+                                                                    return Container(
+                                                                      width: 80,
+                                                                      height: 80,
+                                                                      decoration: BoxDecoration(
+                                                                        color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                                                                        borderRadius: BorderRadius.circular(8),
+                                                                      ),
+                                                                      child: const Icon(
+                                                                        Icons.restaurant,
+                                                                        color: AppTheme.primaryGreen,
+                                                                        size: 40,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ),
                 ),
               ),
               
