@@ -5,6 +5,7 @@ import '../utils/app_theme.dart';
 import '../utils/translations.dart';
 import '../models/recipe.dart';
 import 'recipe_detail_screen.dart';
+import 'ai_recipe_screen.dart';
 
 // Custom painter for background bubbles
 class _BubbleBackgroundPainter extends CustomPainter {
@@ -307,6 +308,32 @@ class _RecipesScreenState extends State<RecipesScreen> {
                           ),
                   ),
                 ],
+              ),
+              // AI Recipe Button - positioned at bottom right, above navigation bar
+              Positioned(
+                bottom: 16,
+                right: 16,
+                child: FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AIRecipeScreen(),
+                      ),
+                    );
+                  },
+                  backgroundColor: const Color(0xFF5D4037),
+                  elevation: 4,
+                  icon: const Icon(Icons.auto_awesome, color: Colors.white),
+                  label: const Text(
+                    'AI Chef',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
