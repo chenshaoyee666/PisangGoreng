@@ -160,21 +160,22 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0x331E4B7A),
-                        foregroundColor: const Color(0xFF1E4B7A),
-                        side: const BorderSide(color: Color(0xFF1E4B7A), width: 2),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: const Color(0xFF4E342E),
+                        foregroundColor: Colors.white,
+                        side: BorderSide.none,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.qr_code_scanner, color: Color(0xFF1E4B7A)),
-                          const SizedBox(width: 12),
+                          const Icon(Icons.qr_code_scanner, color: Colors.white, size: 18),
+                          const SizedBox(width: 8),
                           Text(
                             Translations.get('scan_qr_claim', lang),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: const Color(0xFF1E4B7A),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
                                 ),
                           ),
                         ],
@@ -188,21 +189,22 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                         setState(() => _currentIndex = 2);
                       },
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0x33E05C0B),
-                        foregroundColor: const Color(0xFFE05C0B),
-                        side: const BorderSide(color: Color(0xFFE05C0B), width: 2),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: const Color(0xFF4E342E),
+                        foregroundColor: Colors.white,
+                        side: BorderSide.none,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.location_on, color: Color(0xFFE05C0B)),
-                          const SizedBox(width: 12),
+                          const Icon(Icons.location_on, color: Colors.white, size: 18),
+                          const SizedBox(width: 8),
                           Text(
                             Translations.get('find_smartbite_hub', lang),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: const Color(0xFFE05C0B),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
                                 ),
                           ),
                         ],
@@ -236,7 +238,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                         Text(
                           'RM 45 ${Translations.get('worth_of_food', lang)}',
                           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: AppTheme.primaryGreen,
+                                color: const Color(0xFFD97706),
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -250,7 +252,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                     LinearProgressIndicator(
                       value: 0.225,
                       backgroundColor: Colors.grey[300],
-                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.primaryGreen),
+                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD97706)),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -263,14 +265,19 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
               const SizedBox(height: 24),
               Text(
                 'My Claimed Items',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: TextStyle(
+                  color: const Color(0xFF4E342E),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Poppins',
+                ),
               ),
               const SizedBox(height: 16),
               _buildClaimedItemCard(
                 'Fresh Vegetables Mix',
                 'Expires in 2 days',
                 'Claimed 1 hour ago',
-                AppTheme.successGreen,
+                const Color(0xFF1F3A5F),
               ),
               const SizedBox(height: 12),
               _buildClaimedItemCard(
@@ -284,7 +291,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                 'Canned Goods',
                 'Expires in 1 week',
                 'Claimed 2 days ago',
-                AppTheme.successGreen,
+                const Color(0xFF1F3A5F),
               ),
               const SizedBox(height: 24),
               Row(
@@ -312,7 +319,20 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
   }
 
   Widget _buildMapScreen(AppState appState) {
-    return SingleChildScrollView(
+    return Stack(
+      children: [
+        // Decorative bubbles
+        Positioned(
+          right: -20,
+          top: 60,
+          child: _decorBubble(120, const Color(0xFF5D4037), 0.08),
+        ),
+        Positioned(
+          right: 40,
+          bottom: 300,
+          child: _decorBubble(80, const Color(0xFFDA650B), 0.1),
+        ),
+        SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -421,6 +441,8 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
           ),
         ],
       ),
+        ),
+      ],
     );
   }
 
