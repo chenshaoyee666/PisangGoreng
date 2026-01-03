@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../utils/app_theme.dart';
+import '../utils/api_config.dart';
 
 class AIRecipeScreen extends StatefulWidget {
   const AIRecipeScreen({super.key});
@@ -63,7 +64,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:5000/api/recipe/suggest'),
+        Uri.parse(ApiConfig.recipeUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'ingredients': _ingredients,
@@ -79,13 +80,21 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             _generatedRecipe = data['recipe'];
           });
         } else {
-          _showError('Failed to generate recipe');
+          _showError('Failed to generate recipe: ${data['error'] ?? 'Unknown error'}');
         }
       } else {
-        _showError('Server error: ${response.statusCode}');
+        // Try to parse error message from response body
+        String errorMsg = 'Server error: ${response.statusCode}';
+        try {
+          final errorData = jsonDecode(response.body);
+          if (errorData['error'] != null) {
+            errorMsg = 'Error: ${errorData['error']}';
+          }
+        } catch (_) {}
+        _showError(errorMsg);
       }
     } catch (e) {
-      _showError('Error: $e\n\nMake sure the Python backend is running on port 5000');
+      _showError('Error: $e\n\nMake sure the Python backend is running at ${ApiConfig.baseUrl}');
     } finally {
       setState(() {
         _isLoading = false;
@@ -124,15 +133,21 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF9EC),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text(
           'AI Recipe Generator',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
+            color: Colors.white,
           ),
         ),
         backgroundColor: const Color(0xFF5D4037),
         foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
       body: _generatedRecipe == null ? _buildInputForm() : _buildRecipeResult(),
@@ -524,7 +539,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
                   ],
                 ),
               );
-            }).toList(),
+            }),
             const SizedBox(height: 24),
           ],
 

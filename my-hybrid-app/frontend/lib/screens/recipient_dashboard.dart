@@ -224,7 +224,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
               ),
               const SizedBox(height: 12),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppTheme.cardBackground,
                   borderRadius: BorderRadius.circular(16),
@@ -235,16 +235,22 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'RM 45 ${Translations.get('worth_of_food', lang)}',
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: const Color(0xFFD97706),
-                                fontWeight: FontWeight.w600,
-                              ),
+                        Flexible(
+                          child: Text(
+                            'RM 45 ${Translations.get('worth_of_food', lang)}',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: const Color(0xFFD97706),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                          ),
                         ),
+                        const SizedBox(width: 8),
                         Text(
                           'RM 200 ${Translations.get('limit', lang)}',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 12,
+                              ),
                         ),
                       ],
                     ),
@@ -257,7 +263,9 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
                     const SizedBox(height: 8),
                     Text(
                       'Fair distribution ensures everyone gets access',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 12,
+                          ),
                     ),
                   ],
                 ),
@@ -453,112 +461,133 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
   Widget _buildHubListItem(String name, String address, String distance, String items, Color statusColor) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             Row(
               children: [
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: 40,
+                  height: 40,
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Icon(Icons.store, color: statusColor, size: 24),
+                  child: Icon(Icons.store, color: statusColor, size: 20),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         name,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 16, fontFamily: 'Poppins'),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
+                            ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 2),
                       Text(
                         address,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppTheme.textSecondary,
                               fontFamily: 'Poppins',
+                              fontSize: 11,
                             ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.location_on, size: 14, color: statusColor),
-                          const SizedBox(width: 4),
+                          Icon(Icons.location_on, size: 12, color: statusColor),
+                          const SizedBox(width: 2),
                           Text(
                             distance,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: statusColor,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: 'Poppins',
+                                  fontSize: 10,
                                 ),
                           ),
-                          const SizedBox(width: 16),
-                          const Icon(Icons.access_time, size: 14, color: AppTheme.textSecondary),
-                          const SizedBox(width: 4),
-                          Text(
-                            _getEstimatedTime(distance),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppTheme.textSecondary,
-                                  fontFamily: 'Poppins',
-                                ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.access_time, size: 12, color: AppTheme.textSecondary),
+                          const SizedBox(width: 2),
+                          Flexible(
+                            child: Text(
+                              _getEstimatedTime(distance),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppTheme.textSecondary,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 10,
+                                  ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(width: 6),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     items,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: statusColor,
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Poppins',
+                          fontSize: 10,
                         ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
                   flex: 2,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      _showNavigationDialog(name, address, distance);
-                    },
-                    icon: const Icon(Icons.directions, size: 16),
-                    label: const Text('Navigate'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF5D4037),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: SizedBox(
+                    height: 32,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        _showNavigationDialog(name, address, distance);
+                      },
+                      icon: const Icon(Icons.directions, size: 14),
+                      label: const Text('Navigate', style: TextStyle(fontSize: 12)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF5D4037),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 6),
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      _showHubDetails(name, address, items);
-                    },
-                    icon: const Icon(Icons.info_outline, size: 16),
-                    label: const Text('Info'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: statusColor,
-                      side: BorderSide(color: statusColor),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: SizedBox(
+                    height: 32,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        _showHubDetails(name, address, items);
+                      },
+                      icon: const Icon(Icons.info_outline, size: 14),
+                      label: const Text('Info', style: TextStyle(fontSize: 12)),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: statusColor,
+                        side: BorderSide(color: statusColor),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                      ),
                     ),
                   ),
                 ),
@@ -577,40 +606,47 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
   }
 
   void _showNavigationDialog(String hubName, String address, String distance) {
+    const Color darkBrown = Color(0xFF5D4037);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.navigation, color: AppTheme.primaryGreen),
+            const Icon(Icons.navigation, color: darkBrown, size: 20),
             const SizedBox(width: 8),
-            Text('Navigate to $hubName'),
+            Expanded(
+              child: Text(
+                'Navigate to $hubName',
+                style: const TextStyle(fontSize: 16),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Address: $address'),
+            Text('Address: $address', style: const TextStyle(fontSize: 13)),
             const SizedBox(height: 8),
-            Text('Distance: $distance'),
+            Text('Distance: $distance', style: const TextStyle(fontSize: 13)),
             const SizedBox(height: 8),
-            Text('Estimated time: ${_getEstimatedTime(distance)}'),
+            Text('Estimated time: ${_getEstimatedTime(distance)}', style: const TextStyle(fontSize: 13)),
             const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                color: darkBrown.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: AppTheme.primaryGreen, size: 20),
-                  SizedBox(width: 8),
+                  Icon(Icons.info_outline, color: darkBrown, size: 18),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'This will open your preferred navigation app',
-                      style: TextStyle(color: AppTheme.primaryGreen),
+                      style: TextStyle(color: darkBrown, fontSize: 12),
                     ),
                   ),
                 ],
@@ -629,11 +665,11 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Opening navigation to $hubName...'),
-                  backgroundColor: AppTheme.primaryGreen,
+                  backgroundColor: darkBrown,
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryGreen),
+            style: ElevatedButton.styleFrom(backgroundColor: darkBrown),
             child: const Text('Navigate', style: TextStyle(color: Colors.white)),
           ),
         ],
