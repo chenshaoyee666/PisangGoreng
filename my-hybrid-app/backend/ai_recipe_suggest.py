@@ -1,17 +1,43 @@
 import os
 import json
-import google.generativeai as genai
 from dotenv import load_dotenv
+from pathlib import Path
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from .env file (find the correct path)
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path, override=True)
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+# Get API key
+api_key = os.getenv('GEMINI_API_KEY')
+print(f"🔑 API Key loaded: {'Yes' if api_key and api_key != 'your_gemini_api_key_here' else 'No'}")
+print(f"🔑 API Key value: {api_key[:10]}...{api_key[-4:]}" if api_key and len(api_key) > 14 else "No key")
+
+# Use the new google.genai package
+from google import genai
+from google.genai import types
+
+# Create client with API key
+client = None
+if api_key and api_key != 'your_gemini_api_key_here':
+    try:
+        client = genai.Client(api_key=api_key)
+        print("✅ Gemini Client initialized successfully")
+    except Exception as e:
+        print(f"❌ Failed to initialize Gemini Client: {e}")
+else:
+    print("⚠️  WARNING: GEMINI_API_KEY not set or invalid!")
+
 
 class AIRecipeSuggester:
     def __init__(self):
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        self.api_key = os.getenv('GEMINI_API_KEY')
+        self.client = client
+        self.model_name = 'gemini-2.5-flash'
+        
+        if self.client:
+            print(f"✅ Model ready: {self.model_name}")
+        else:
+            print("❌ Model not initialized - API key missing or invalid")
         self.system_prompt = """You are a professional chef with expertise in global cuisines and creative cooking. 
 Your role is to suggest delicious recipes based on the ingredients provided by users.
 
@@ -37,6 +63,13 @@ Guidelines:
         Returns:
             dict: Recipe with name, ingredients, steps, cooking time, etc.
         """
+        # Check if client is configured
+        if not self.client:
+            return {
+                'success': False,
+                'error': 'GEMINI_API_KEY not configured. Please add your API key to the .env file. Get a free key at: https://aistudio.google.com/app/apikey'
+            }
+        
         try:
             # Build the user prompt
             ingredients_text = ", ".join(ingredients)
@@ -71,14 +104,17 @@ Guidelines:
 }
 """
             
-            # Generate response
-            response = self.model.generate_content(
-                self.system_prompt + "\n\n" + user_prompt,
-                generation_config={
-                    'temperature': 0.7,
-                    'top_p': 0.95,
-                    'max_output_tokens': 2048,
-                }
+            full_prompt = self.system_prompt + "\n\n" + user_prompt
+            
+            # Generate response using the new API
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=full_prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.7,
+                    top_p=0.95,
+                    max_output_tokens=2048,
+                )
             )
             
             # Parse the response
@@ -124,6 +160,12 @@ Guidelines:
         Returns:
             dict: AI response
         """
+        if not self.client:
+            return {
+                'success': False,
+                'error': 'GEMINI_API_KEY not configured'
+            }
+            
         try:
             prompt = self.system_prompt + "\n\n"
             
@@ -132,13 +174,14 @@ Guidelines:
             
             prompt += f"User question: {question}"
             
-            response = self.model.generate_content(
-                prompt,
-                generation_config={
-                    'temperature': 0.8,
-                    'top_p': 0.95,
-                    'max_output_tokens': 1024,
-                }
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.8,
+                    top_p=0.95,
+                    max_output_tokens=1024,
+                )
             )
             
             return {
