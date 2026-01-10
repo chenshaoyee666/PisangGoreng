@@ -12,12 +12,18 @@ class AIRecipeScreen extends StatefulWidget {
 }
 
 class _AIRecipeScreenState extends State<AIRecipeScreen> {
+  static const bool _forceOfflineAi = bool.fromEnvironment(
+    'AI_OFFLINE',
+    defaultValue: true,
+  );
+
   final TextEditingController _ingredientController = TextEditingController();
   final List<String> _ingredients = [];
   String? _selectedCuisine;
   String? _selectedDietary;
   bool _isLoading = false;
   Map<String, dynamic>? _generatedRecipe;
+  bool _isDemoMode = _forceOfflineAi;
 
   final List<String> _cuisineTypes = [
     'Italian',
@@ -63,43 +69,160 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse(ApiConfig.recipeUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'ingredients': _ingredients,
-          if (_selectedCuisine != null) 'cuisine_type': _selectedCuisine,
-          if (_selectedDietary != null) 'dietary_preferences': _selectedDietary,
-        }),
-      ).timeout(const Duration(seconds: 30));
+      if (_forceOfflineAi) {
+        await Future<void>.delayed(const Duration(milliseconds: 600));
+        setState(() {
+          _generatedRecipe = _buildMockRecipe(
+            ingredients: _ingredients,
+            cuisineType: _selectedCuisine,
+            dietaryPreferences: _selectedDietary,
+          );
+          _isDemoMode = true;
+        });
+        return;
+      }
+
+      final response = await http
+          .post(
+            Uri.parse(ApiConfig.recipeUrl),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              'ingredients': _ingredients,
+              if (_selectedCuisine != null) 'cuisine_type': _selectedCuisine,
+              if (_selectedDietary != null)
+                'dietary_preferences': _selectedDietary,
+            }),
+          )
+          .timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success'] == true) {
           setState(() {
             _generatedRecipe = data['recipe'];
+            _isDemoMode = false;
           });
         } else {
-          _showError('Failed to generate recipe: ${data['error'] ?? 'Unknown error'}');
+          _useMockFallback();
         }
       } else {
-        // Try to parse error message from response body
-        String errorMsg = 'Server error: ${response.statusCode}';
-        try {
-          final errorData = jsonDecode(response.body);
-          if (errorData['error'] != null) {
-            errorMsg = 'Error: ${errorData['error']}';
-          }
-        } catch (_) {}
-        _showError(errorMsg);
+        _useMockFallback();
       }
     } catch (e) {
-      _showError('Error: $e\n\nMake sure the Python backend is running at ${ApiConfig.baseUrl}');
+      _useMockFallback();
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  void _useMockFallback() {
+    setState(() {
+      _generatedRecipe = _buildMockRecipe(
+        ingredients: _ingredients,
+        cuisineType: _selectedCuisine,
+        dietaryPreferences: _selectedDietary,
+      );
+      _isDemoMode = true;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Demo mode: showing offline recipe suggestion'),
+        backgroundColor: const Color(0xFF5D4037),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  Map<String, dynamic> _buildMockRecipe({
+    required List<String> ingredients,
+    String? cuisineType,
+    String? dietaryPreferences,
+  }) {
+    final cleanedIngredients = ingredients
+        .map((i) => i.trim())
+        .where((i) => i.isNotEmpty)
+        .toList();
+
+    cleanedIngredients.sort(
+      (a, b) => a.toLowerCase().compareTo(b.toLowerCase()),
+    );
+
+    final cuisine = (cuisineType?.trim().isNotEmpty ?? false)
+        ? cuisineType!.trim()
+        : 'Fusion';
+    final dietary = (dietaryPreferences?.trim().isNotEmpty ?? false)
+        ? dietaryPreferences!.trim()
+        : null;
+    final main = cleanedIngredients.isNotEmpty
+        ? _titleCase(cleanedIngredients.first)
+        : 'Pantry';
+
+    final servings = cleanedIngredients.length <= 2
+        ? 2
+        : (cleanedIngredients.length <= 5 ? 3 : 4);
+    final prepMinutes = 8 + (cleanedIngredients.length * 2);
+    final cookMinutes = 12 + (cleanedIngredients.length * 3);
+
+    final recipeName = dietary == null
+        ? '$cuisine $main Bowl'
+        : '$cuisine $main Bowl (${dietary})';
+
+    final descriptionParts = <String>[
+      'A quick $cuisine-inspired recipe built from your ingredients.',
+      if (dietary != null) 'Designed to fit a $dietary lifestyle.',
+      'Great for a smooth offline demo — no server needed.',
+    ];
+
+    final ingredientLines = <String>[
+      for (final ingredient in cleanedIngredients)
+        '• 1 portion ${_titleCase(ingredient)}',
+      '• 1 tbsp cooking oil',
+      '• 1 clove garlic (optional)',
+      '• Salt & pepper to taste',
+      if (cuisine.toLowerCase().contains('italian'))
+        '• 1 tsp dried herbs (oregano/basil)',
+      if (cuisine.toLowerCase().contains('chinese'))
+        '• 1 tbsp soy sauce (optional)',
+      if (cuisine.toLowerCase().contains('mexican'))
+        '• 1/2 tsp chili powder (optional)',
+      if (cuisine.toLowerCase().contains('indian'))
+        '• 1/2 tsp curry powder (optional)',
+    ];
+
+    final steps = <String>[
+      'Prep: rinse/chop your ingredients and keep them ready.',
+      'Heat a pan over medium heat and add oil.',
+      'Add garlic (optional) and stir for 20–30 seconds.',
+      'Add the main ingredients and cook until aromatic and heated through.',
+      'Season with salt & pepper and add any $cuisine-style optional seasoning.',
+      'Serve warm in a bowl. Adjust taste and enjoy.',
+    ];
+
+    final tips = <String>[
+      'Cut ingredients into similar sizes for even cooking.',
+      'If it feels dry, add a splash of water or stock while cooking.',
+      'Finish with a squeeze of lime/lemon or herbs for freshness.',
+    ];
+
+    return {
+      'recipe_name': recipeName,
+      'description': descriptionParts.join(' '),
+      'prep_time': '$prepMinutes minutes',
+      'cook_time': '$cookMinutes minutes',
+      'servings': servings,
+      'ingredients': ingredientLines,
+      'steps': steps,
+      'tips': tips,
+    };
+  }
+
+  String _titleCase(String text) {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return trimmed;
+    return trimmed[0].toUpperCase() + trimmed.substring(1);
   }
 
   void _showError(String message) {
@@ -150,7 +273,49 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
-      body: _generatedRecipe == null ? _buildInputForm() : _buildRecipeResult(),
+      body: Column(
+        children: [
+          if (_isDemoMode) _buildDemoBanner(),
+          Expanded(
+            child: _generatedRecipe == null
+                ? _buildInputForm()
+                : _buildRecipeResult(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDemoBanner() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      color: const Color(0xFF5D4037),
+      child: Row(
+        children: [
+          const Icon(Icons.info_outline, color: Colors.white),
+          const SizedBox(width: 12),
+          const Expanded(
+            child: Text(
+              'Demo mode: offline recipe suggestions (no backend required)',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Poppins',
+                fontSize: 13,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _isDemoMode = false;
+              });
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.white70),
+            child: const Text('Hide', style: TextStyle(fontFamily: 'Poppins')),
+          ),
+        ],
+      ),
     );
   }
 
@@ -209,13 +374,22 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
                     hintStyle: const TextStyle(fontFamily: 'Poppins'),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF5D4037), width: 1.5),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5D4037),
+                        width: 1.5,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF5D4037), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5D4037),
+                        width: 2,
+                      ),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                   ),
                   onSubmitted: (_) => _addIngredient(),
                 ),
@@ -244,7 +418,10 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
               runSpacing: 8,
               children: _ingredients.map((ingredient) {
                 return Chip(
-                  label: Text(ingredient, style: const TextStyle(fontFamily: 'Poppins')),
+                  label: Text(
+                    ingredient,
+                    style: const TextStyle(fontFamily: 'Poppins'),
+                  ),
                   onDeleted: () => _removeIngredient(ingredient),
                   deleteIcon: const Icon(Icons.close, size: 18),
                   backgroundColor: const Color(0xFF5D4037).withOpacity(0.1),
@@ -270,7 +447,10 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             children: _cuisineTypes.map((cuisine) {
               final isSelected = _selectedCuisine == cuisine;
               return FilterChip(
-                label: Text(cuisine, style: const TextStyle(fontFamily: 'Poppins')),
+                label: Text(
+                  cuisine,
+                  style: const TextStyle(fontFamily: 'Poppins'),
+                ),
                 selected: isSelected,
                 onSelected: (selected) {
                   setState(() {
@@ -280,7 +460,9 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
                 selectedColor: const Color(0xFF5D4037).withOpacity(0.2),
                 checkmarkColor: const Color(0xFF5D4037),
                 labelStyle: TextStyle(
-                  color: isSelected ? const Color(0xFF5D4037) : Colors.grey[700],
+                  color: isSelected
+                      ? const Color(0xFF5D4037)
+                      : Colors.grey[700],
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               );
@@ -303,7 +485,10 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             children: _dietaryOptions.map((dietary) {
               final isSelected = _selectedDietary == dietary;
               return FilterChip(
-                label: Text(dietary, style: const TextStyle(fontFamily: 'Poppins')),
+                label: Text(
+                  dietary,
+                  style: const TextStyle(fontFamily: 'Poppins'),
+                ),
                 selected: isSelected,
                 onSelected: (selected) {
                   setState(() {
@@ -313,7 +498,9 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
                 selectedColor: const Color(0xFF5D4037).withOpacity(0.2),
                 checkmarkColor: const Color(0xFF5D4037),
                 labelStyle: TextStyle(
-                  color: isSelected ? const Color(0xFF5D4037) : Colors.grey[700],
+                  color: isSelected
+                      ? const Color(0xFF5D4037)
+                      : Colors.grey[700],
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               );
@@ -374,7 +561,8 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
     final prepTime = _generatedRecipe!['prep_time'] ?? 'N/A';
     final cookTime = _generatedRecipe!['cook_time'] ?? 'N/A';
     final servings = _generatedRecipe!['servings']?.toString() ?? 'N/A';
-    final ingredients = (_generatedRecipe!['ingredients'] as List?)?.cast<String>() ?? [];
+    final ingredients =
+        (_generatedRecipe!['ingredients'] as List?)?.cast<String>() ?? [];
     final steps = (_generatedRecipe!['steps'] as List?)?.cast<String>() ?? [];
     final tips = (_generatedRecipe!['tips'] as List?)?.cast<String>() ?? [];
 
@@ -400,11 +588,15 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.auto_awesome, color: Colors.white, size: 24),
+                    const Icon(
+                      Icons.auto_awesome,
+                      color: Colors.white,
+                      size: 24,
+                    ),
                     const SizedBox(width: 8),
-                    const Text(
-                      'AI Generated',
-                      style: TextStyle(
+                    Text(
+                      _isDemoMode ? 'Demo AI (Offline)' : 'AI Generated',
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontFamily: 'Poppins',
                         fontSize: 12,
@@ -441,13 +633,9 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           // Time and servings info
           Row(
             children: [
-              Expanded(
-                child: _buildInfoCard(Icons.schedule, 'Prep', prepTime),
-              ),
+              Expanded(child: _buildInfoCard(Icons.schedule, 'Prep', prepTime)),
               const SizedBox(width: 12),
-              Expanded(
-                child: _buildInfoCard(Icons.timer, 'Cook', cookTime),
-              ),
+              Expanded(child: _buildInfoCard(Icons.timer, 'Cook', cookTime)),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildInfoCard(Icons.restaurant, 'Serves', servings),
