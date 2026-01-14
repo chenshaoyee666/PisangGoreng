@@ -23,7 +23,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
   String? _selectedDietary;
   bool _isLoading = false;
   Map<String, dynamic>? _generatedRecipe;
-  bool _isDemoMode = _forceOfflineAi;
 
   final List<String> _cuisineTypes = [
     'Italian',
@@ -77,7 +76,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             cuisineType: _selectedCuisine,
             dietaryPreferences: _selectedDietary,
           );
-          _isDemoMode = true;
         });
         return;
       }
@@ -100,7 +98,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
         if (data['success'] == true) {
           setState(() {
             _generatedRecipe = data['recipe'];
-            _isDemoMode = false;
           });
         } else {
           _useMockFallback();
@@ -124,16 +121,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
         cuisineType: _selectedCuisine,
         dietaryPreferences: _selectedDietary,
       );
-      _isDemoMode = true;
     });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Demo mode: showing offline recipe suggestion'),
-        backgroundColor: const Color(0xFF5D4037),
-        duration: const Duration(seconds: 3),
-      ),
-    );
   }
 
   Map<String, dynamic> _buildMockRecipe({
@@ -173,7 +161,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
     final descriptionParts = <String>[
       'A quick $cuisine-inspired recipe built from your ingredients.',
       if (dietary != null) 'Designed to fit a $dietary lifestyle.',
-      'Great for a smooth offline demo — no server needed.',
+      'Balanced, customizable, and great for busy days.',
     ];
 
     final ingredientLines = <String>[
@@ -273,49 +261,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          if (_isDemoMode) _buildDemoBanner(),
-          Expanded(
-            child: _generatedRecipe == null
-                ? _buildInputForm()
-                : _buildRecipeResult(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDemoBanner() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: const Color(0xFF5D4037),
-      child: Row(
-        children: [
-          const Icon(Icons.info_outline, color: Colors.white),
-          const SizedBox(width: 12),
-          const Expanded(
-            child: Text(
-              'Demo mode: offline recipe suggestions (no backend required)',
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Poppins',
-                fontSize: 13,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _isDemoMode = false;
-              });
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.white70),
-            child: const Text('Hide', style: TextStyle(fontFamily: 'Poppins')),
-          ),
-        ],
-      ),
+      body: _generatedRecipe == null ? _buildInputForm() : _buildRecipeResult(),
     );
   }
 
@@ -594,9 +540,9 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
                       size: 24,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      _isDemoMode ? 'Demo AI (Offline)' : 'AI Generated',
-                      style: const TextStyle(
+                    const Text(
+                      'AI Generated',
+                      style: TextStyle(
                         color: Colors.white70,
                         fontFamily: 'Poppins',
                         fontSize: 12,

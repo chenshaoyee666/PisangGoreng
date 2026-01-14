@@ -84,7 +84,8 @@ class WelcomeScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Center(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
                         child: Text(
                           Translations.get('tagline', lang),
                           style: const TextStyle(
@@ -93,6 +94,7 @@ class WelcomeScreen extends StatelessWidget {
                             fontSize: 18,
                             color: Color(0xFFBCA17A),
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       const SizedBox(height: 32),
