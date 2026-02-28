@@ -179,7 +179,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 }
 
-// Custom QR Scanner Overlay
 class QrScannerOverlayShape extends ShapeBorder {
   const QrScannerOverlayShape({
     this.borderColor = Colors.red,
@@ -252,11 +251,9 @@ class QrScannerOverlayShape extends ShapeBorder {
       mCutOutSize - borderOffset * 2,
     );
 
-    // Draw background
     canvas.saveLayer(rect, backgroundPaint);
     canvas.drawRect(rect, backgroundPaint);
 
-    // Draw the cut out area
     canvas.drawRRect(
       RRect.fromRectAndRadius(cutOutRect, Radius.circular(borderRadius)),
       boxPaint,
@@ -264,12 +261,10 @@ class QrScannerOverlayShape extends ShapeBorder {
 
     canvas.restore();
 
-    // Draw border lines
     final borderLength = this.borderLength > mCutOutSize / 2 + borderOffset * 2
         ? borderWidthSize / 2
         : this.borderLength;
 
-    // Top left
     canvas.drawLine(
       Offset(cutOutRect.left - borderOffset, cutOutRect.top - borderOffset),
       Offset(cutOutRect.left - borderOffset + borderLength, cutOutRect.top - borderOffset),
@@ -281,7 +276,6 @@ class QrScannerOverlayShape extends ShapeBorder {
       borderPaint,
     );
 
-    // Top right
     canvas.drawLine(
       Offset(cutOutRect.right + borderOffset, cutOutRect.top - borderOffset),
       Offset(cutOutRect.right + borderOffset - borderLength, cutOutRect.top - borderOffset),
@@ -293,7 +287,6 @@ class QrScannerOverlayShape extends ShapeBorder {
       borderPaint,
     );
 
-    // Bottom left
     canvas.drawLine(
       Offset(cutOutRect.left - borderOffset, cutOutRect.bottom + borderOffset),
       Offset(cutOutRect.left - borderOffset + borderLength, cutOutRect.bottom + borderOffset),
@@ -305,7 +298,6 @@ class QrScannerOverlayShape extends ShapeBorder {
       borderPaint,
     );
 
-    // Bottom right
     canvas.drawLine(
       Offset(cutOutRect.right + borderOffset, cutOutRect.bottom + borderOffset),
       Offset(cutOutRect.right + borderOffset - borderLength, cutOutRect.bottom + borderOffset),

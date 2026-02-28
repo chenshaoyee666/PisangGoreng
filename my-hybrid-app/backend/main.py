@@ -4,18 +4,15 @@ from ai_recipe_suggest import AIRecipeSuggester
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for Flutter app
+CORS(app)
 
-# Initialize AI Recipe Suggester
 ai_suggester = AIRecipeSuggester()
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint"""
     return jsonify({
         'status': 'OK',
         'message': 'AI Recipe Service is running',
@@ -24,16 +21,6 @@ def health_check():
 
 @app.route('/api/recipe/suggest', methods=['POST'])
 def suggest_recipe():
-    """
-    Generate recipe suggestion based on ingredients
-    
-    Expected JSON body:
-    {
-        "ingredients": ["ingredient1", "ingredient2", ...],
-        "dietary_preferences": "vegetarian" (optional),
-        "cuisine_type": "Italian" (optional)
-    }
-    """
     try:
         data = request.get_json()
         
@@ -53,7 +40,6 @@ def suggest_recipe():
                 'error': 'Please provide at least one ingredient'
             }), 400
         
-        # Generate recipe using AI
         result = ai_suggester.generate_recipe(
             ingredients=ingredients,
             dietary_preferences=dietary_preferences,
@@ -73,15 +59,6 @@ def suggest_recipe():
 
 @app.route('/api/recipe/chat', methods=['POST'])
 def recipe_chat():
-    """
-    Chat with AI about cooking questions
-    
-    Expected JSON body:
-    {
-        "question": "How do I...",
-        "recipe_context": {...} (optional)
-    }
-    """
     try:
         data = request.get_json()
         
@@ -94,7 +71,6 @@ def recipe_chat():
         question = data.get('question')
         recipe_context = data.get('recipe_context')
         
-        # Get AI response
         result = ai_suggester.chat_about_recipe(
             question=question,
             recipe_context=recipe_context
@@ -113,10 +89,6 @@ def recipe_chat():
 
 @app.route('/api/recipe/quick-suggest', methods=['GET'])
 def quick_suggest():
-    """
-    Quick recipe suggestion with ingredients from query params
-    Example: /api/recipe/quick-suggest?ingredients=chicken,tomatoes,pasta
-    """
     try:
         ingredients_str = request.args.get('ingredients', '')
         
@@ -151,9 +123,9 @@ if __name__ == '__main__':
     port = int(os.getenv('PYTHON_PORT', 5000))
     debug = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
     
-    print(f"🚀 Starting AI Recipe Service on port {port}")
-    print(f"📝 Using Gemini 2.0 Flash model")
-    print(f"🔧 Debug mode: {debug}")
+    print(f"Starting AI Recipe Service on port {port}")
+    print(f"Using Gemini 2.5 Flash model")
+    print(f"Debug mode: {debug}")
     
     app.run(
         host='0.0.0.0',

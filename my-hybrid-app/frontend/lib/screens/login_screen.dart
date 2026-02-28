@@ -150,9 +150,9 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      // ignore: deprecated_member_use
+
       onPopInvoked: (_) {
-        // Always navigate to dashboard on back
+
         final appState = Provider.of<AppState>(context, listen: false);
         Widget destination;
         if (appState.userRole != null && appState.userRole.toString().contains('recipient')) {

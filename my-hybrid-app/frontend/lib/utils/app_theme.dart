@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // SmartBite Color Palette
+
   static const Color primaryGreen = Color(0xFF7BC67E);
   static const Color accentOrange = Color(0xFFDA650B);
   static const Color backgroundColor = Color(0xFFFFFFFF);

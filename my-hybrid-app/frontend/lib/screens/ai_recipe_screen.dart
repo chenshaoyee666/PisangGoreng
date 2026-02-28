@@ -145,7 +145,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
+
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -175,7 +175,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           ),
           const SizedBox(height: 24),
 
-          // Ingredients input
           Text(
             'Your Ingredients',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -222,7 +221,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           ),
           const SizedBox(height: 16),
 
-          // Ingredients chips
           if (_ingredients.isNotEmpty) ...[
             Wrap(
               spacing: 8,
@@ -240,7 +238,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             const SizedBox(height: 24),
           ],
 
-          // Cuisine type
           Text(
             'Cuisine Type (Optional)',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -273,7 +270,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           ),
           const SizedBox(height: 24),
 
-          // Dietary preferences
           Text(
             'Dietary Preferences (Optional)',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -306,7 +302,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           ),
           const SizedBox(height: 32),
 
-          // Generate button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -368,7 +363,7 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Recipe header
+
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -423,7 +418,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           ),
           const SizedBox(height: 20),
 
-          // Time and servings info
           Row(
             children: [
               Expanded(
@@ -441,7 +435,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
           ),
           const SizedBox(height: 24),
 
-          // Ingredients
           if (ingredients.isNotEmpty) ...[
             _buildSectionTitle('Ingredients'),
             const SizedBox(height: 12),
@@ -483,7 +476,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             const SizedBox(height: 24),
           ],
 
-          // Steps
           if (steps.isNotEmpty) ...[
             _buildSectionTitle('Instructions'),
             const SizedBox(height: 12),
@@ -528,7 +520,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
             const SizedBox(height: 24),
           ],
 
-          // Tips
           if (tips.isNotEmpty) ...[
             _buildSectionTitle('Chef\'s Tips'),
             const SizedBox(height: 12),
@@ -571,7 +562,6 @@ class _AIRecipeScreenState extends State<AIRecipeScreen> {
 
           const SizedBox(height: 32),
 
-          // Action buttons
           Row(
             children: [
               Expanded(

@@ -18,7 +18,6 @@ class _AboutUsBackgroundPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..isAntiAlias = true;
 
-    // Draw soft bubbles
     paint.color = const Color(0xFFFFEE8C).withOpacity(0.25);
     canvas.drawCircle(Offset(size.width * 0.2, 80), 60, paint);
     paint.color = const Color(0xFFBCA17A).withOpacity(0.18);
@@ -28,7 +27,6 @@ class _AboutUsBackgroundPainter extends CustomPainter {
     paint.color = const Color(0xFFFDEFC6).withOpacity(0.18);
     canvas.drawCircle(Offset(size.width * 0.85, size.height * 0.85), 70, paint);
 
-    // Draw accent lines
     paint.color = const Color(0xFFDA650B).withOpacity(0.13);
     paint.strokeWidth = 4;
     paint.style = PaintingStyle.stroke;

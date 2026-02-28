@@ -48,10 +48,3 @@ class BubbleData {
   });
 }
 
-// Example usage:
-// BackgroundBubbles(
-//   bubbles: [
-//     BubbleData(top: 40, left: 20, size: 120, color: Colors.amber),
-//     BubbleData(bottom: 80, right: 30, size: 80, color: Colors.brown),
-//   ],
-// )

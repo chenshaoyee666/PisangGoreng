@@ -38,7 +38,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       ),
       body: Stack(
         children: [
-          // Background bubbles
+
           BackgroundBubbles(
             bubbles: [
               BubbleData(top: 50, left: 30, size: 100, color: Color(0xFFFFF6E5)),
@@ -232,7 +232,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    // Ingredient Input Row
+
                     Row(
                       children: [
                         Expanded(
@@ -266,7 +266,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                  // Recipe Info
+
                   Row(
                     children: [
                       _buildInfoChip(
@@ -288,7 +288,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
                   const SizedBox(height: 24),
 
-                  // Ingredients Section
                   Text(
                     'Ingredients',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -321,7 +320,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
                   const SizedBox(height: 24),
 
-                  // Instructions Section
                   Text(
                     'Instructions',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -371,7 +369,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 
                   const SizedBox(height: 24),
 
-                  // Tags Section
                   if (widget.recipe.tags.isNotEmpty) ...[
                     Text(
                       'Tags',
@@ -470,7 +467,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   }
 
   void _shareRecipe() {
-    // Simulate sharing functionality
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Recipe shared successfully!', style: TextStyle(fontFamily: 'Poppins')),

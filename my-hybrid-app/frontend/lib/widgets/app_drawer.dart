@@ -52,14 +52,14 @@ class AppDrawer extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // No spacing above logo
+
                     Image.asset(
                       'assets/images/logo.png',
                       height: 80,
                       width: 80,
                       fit: BoxFit.contain,
                     ),
-                    // No spacing between logo and text
+
                     Text(
                       'SmartBite',
                       style: GoogleFonts.poppins(

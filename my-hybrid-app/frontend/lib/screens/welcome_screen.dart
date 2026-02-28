@@ -6,7 +6,6 @@ import '../widgets/card_half_circle_decoration.dart';
 import '../widgets/background_bubbles.dart';
 import 'sharer_dashboard.dart';
 import 'recipient_dashboard.dart';
-// No ambiguous imports. Only use Flutter's material.dart for widgets.
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -21,20 +20,20 @@ class WelcomeScreen extends StatelessWidget {
           body: SafeArea(
             child: Stack(
               children: [
-                // Background bubbles
+
                 BackgroundBubbles(
                   bubbles: [
                     BubbleData(top: 40, left: 20, size: 120, color: Color(0xFFFFF6E5)),
                     BubbleData(bottom: 80, right: 30, size: 80, color: Color(0xFFBCA17A)),
                     BubbleData(top: 200, right: -40, size: 100, color: Color(0xFFFFEE8C)),
                     BubbleData(bottom: -30, left: -30, size: 90, color: Color(0xFFF8F4FF)),
-                    // More bubbles on the left side
+
                     BubbleData(top: 120, left: -40, size: 70, color: Color(0xFFFFEE8C)),
                     BubbleData(bottom: 200, left: 10, size: 60, color: Color(0xFFBCA17A)),
                     BubbleData(top: 320, left: -30, size: 50, color: Color(0xFFF8F4FF)),
                     BubbleData(bottom: 350, left: 30, size: 40, color: Color(0xFFFFF6E5)),
                     BubbleData(top: 500, left: 0, size: 80, color: Color(0xFFFFEE8C)),
-                    // Two bubbles to the left of the logo
+
                     BubbleData(top: 60, left: 60, size: 36, color: Color(0xFFFFEE8C)),
                     BubbleData(top: 90, left: 100, size: 22, color: Color(0xFFBCA17A)),
                   ],
@@ -45,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 24),
-                      // Language toggle at the top right, logo above title
+
                       Stack(
                         children: [
                           Positioned(
@@ -56,7 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                               child: _buildLanguageToggle(context),
                             ),
                           ),
-                          // Centered logo above SmartBite title
+
                           Column(
                             children: [
                               const SizedBox(height: 32),
@@ -109,7 +108,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      // Sharer Card
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Card(
@@ -120,7 +119,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           child: Stack(
                             children: [
-                              // Half circle decoration
+
                               const Positioned(
                                 top: 0,
                                 right: 0,
@@ -179,7 +178,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 18),
-                      // Recipient Card
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Card(
@@ -190,7 +189,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           child: Stack(
                             children: [
-                              // Half circle decoration
+
                               const Positioned(
                                 top: 0,
                                 right: 0,
@@ -275,7 +274,7 @@ class WelcomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                // (Language toggle now in Row above, title and logo below)
+
               ],
             ),
           ),
@@ -347,8 +346,6 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  // ...existing code...
 
   void _selectRole(BuildContext context, UserRole role) {
     context.read<AppState>().setUserRole(role);

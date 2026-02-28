@@ -3,15 +3,13 @@ import json
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-# Configure Gemini API
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
 class AIRecipeSuggester:
     def __init__(self):
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.system_prompt = """You are a professional chef with expertise in global cuisines and creative cooking. 
 Your role is to suggest delicious recipes based on the ingredients provided by users.
 
@@ -26,17 +24,6 @@ Guidelines:
 """
 
     def generate_recipe(self, ingredients, dietary_preferences=None, cuisine_type=None):
-        """
-        Generate a recipe suggestion based on ingredients
-        
-        Args:
-            ingredients (list): List of available ingredients
-            dietary_preferences (str, optional): E.g., 'vegetarian', 'vegan', 'gluten-free'
-            cuisine_type (str, optional): E.g., 'Italian', 'Asian', 'Mexican'
-        
-        Returns:
-            dict: Recipe with name, ingredients, steps, cooking time, etc.
-        """
         try:
             # Build the user prompt
             ingredients_text = ", ".join(ingredients)
@@ -71,7 +58,6 @@ Guidelines:
 }
 """
             
-            # Generate response
             response = self.model.generate_content(
                 self.system_prompt + "\n\n" + user_prompt,
                 generation_config={
@@ -81,10 +67,8 @@ Guidelines:
                 }
             )
             
-            # Parse the response
             recipe_text = response.text.strip()
             
-            # Remove markdown code blocks if present
             if recipe_text.startswith('```json'):
                 recipe_text = recipe_text.replace('```json', '').replace('```', '').strip()
             elif recipe_text.startswith('```'):
@@ -98,7 +82,6 @@ Guidelines:
             }
             
         except json.JSONDecodeError as e:
-            # If JSON parsing fails, return the raw text
             return {
                 'success': True,
                 'recipe': {
@@ -114,16 +97,6 @@ Guidelines:
             }
 
     def chat_about_recipe(self, question, recipe_context=None):
-        """
-        Chat with AI about cooking questions or recipe modifications
-        
-        Args:
-            question (str): User's cooking question
-            recipe_context (dict, optional): Current recipe context
-        
-        Returns:
-            dict: AI response
-        """
         try:
             prompt = self.system_prompt + "\n\n"
             
@@ -154,10 +127,8 @@ Guidelines:
 
 
 if __name__ == "__main__":
-    # Test the AI recipe suggester
     suggester = AIRecipeSuggester()
     
-    # Test recipe generation
     print("Testing recipe generation...")
     print("-" * 50)
     
@@ -170,12 +141,11 @@ if __name__ == "__main__":
     
     if result['success']:
         recipe = result['recipe']
-        print(f"\n✓ Recipe Generated: {recipe.get('recipe_name', 'Unknown')}")
+        print(f"\nRecipe Generated: {recipe.get('recipe_name', 'Unknown')}")
         print(json.dumps(recipe, indent=2))
     else:
-        print(f"\n✗ Error: {result['error']}")
+        print(f"\nError: {result['error']}")
     
-    # Test chat functionality
     print("\n" + "=" * 50)
     print("Testing chat functionality...")
     print("-" * 50)
@@ -185,6 +155,6 @@ if __name__ == "__main__":
     )
     
     if chat_result['success']:
-        print(f"\n✓ Chat Response:\n{chat_result['response']}")
+        print(f"\nChat Response:\n{chat_result['response']}")
     else:
-        print(f"\n✗ Error: {chat_result['error']}")
+        print(f"\nError: {chat_result['error']}")

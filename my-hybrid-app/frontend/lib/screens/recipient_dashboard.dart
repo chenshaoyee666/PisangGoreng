@@ -321,7 +321,7 @@ class _RecipientDashboardState extends State<RecipientDashboard> {
   Widget _buildMapScreen(AppState appState) {
     return Stack(
       children: [
-        // Decorative bubbles
+
         Positioned(
           right: -20,
           top: 60,

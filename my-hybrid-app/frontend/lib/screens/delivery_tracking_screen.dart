@@ -78,7 +78,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
           ),
           body: Stack(
             children: [
-              // Background bubbles
+
               BackgroundBubbles(
                 bubbles: [
                   BubbleData(top: 10, left: 40, size: 70, color: Color(0xFFFFEE8C)),
@@ -98,7 +98,7 @@ class _DeliveryTrackingScreenState extends State<DeliveryTrackingScreen> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Tracking Header
+
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),

@@ -9,7 +9,7 @@ class Translations {
       'continue_recipient': 'Continue as Recipient',
       'recipient_subtitle': 'Find food donations near you',
       'together_message': 'Together, we can reduce food waste and support our community',
-      // Drawer
+
       'current_role': 'Current role',
       'sharer': 'Sharer',
       'recipient': 'Recipient',
@@ -19,7 +19,7 @@ class Translations {
       'settings': 'Settings',
       'about': 'About',
       'back_to_welcome': 'Back to Welcome',
-      // Dashboard
+
       'people_helped': 'People Helped',
       'waste_saved': 'Waste Saved',
       'food_value': 'Food Value',
@@ -39,7 +39,7 @@ class Translations {
       'upload_share_food': 'Upload and share your surplus food',
       'find_food': 'Find Food',
       'find_food_subtitle': 'Discover available donations near you',
-      // Recipient Dashboard
+
       'welcome': 'Welcome!',
       'find_fresh_food': 'Find fresh food donations near you',
       'scan_qr_claim': 'Scan QR to Claim',
@@ -49,12 +49,12 @@ class Translations {
       'limit': 'limit',
       'nearby_pickups': 'Nearby Pickups',
       'available_now': 'Available Now',
-      // Bottom Navigation
+
       'upload': 'Upload',
       'recipes': 'Recipes',
       'scan_qr': 'Scan QR',
       'map': 'Map',
-      // Food Upload Screen
+
       'ai_scan': 'AI Scan',
       'manual_input': 'Manual Input',
       'food_name': 'Food Name',
@@ -68,7 +68,7 @@ class Translations {
       'cancel': 'Cancel',
       'scan_food': 'Scan Food',
       'tap_to_scan': 'Tap camera to scan food items',
-      // Recipes Screen
+
       'recipe_discovery': 'Recipe Discovery',
       'what_ingredients': 'What ingredients do you have?',
       'add_ingredient': 'Add ingredient',
@@ -76,13 +76,13 @@ class Translations {
       'all': 'All',
       'minutes': 'minutes',
       'servings': 'servings',
-      // QR Scanner Screen
+
       'scan_qr_code': 'Scan QR Code',
       'point_camera_qr': 'Point your camera at a QR code to claim food',
       'food_claimed': 'Food Claimed!',
       'claim_success': 'Successfully claimed',
       'ok': 'OK',
-      // About Us Screen
+
       'about_us': 'About Us',
       'our_mission': 'Our Mission',
       'mission_text': 'SmartBite connects food sharers with those in need, reducing waste while building community bonds.',
@@ -100,7 +100,7 @@ class Translations {
       'contact_us': 'Contact Us',
       'partnerships': 'Partnerships',
       'donate': 'Donate',
-      // Delivery Tracking
+
       'delivery_tracking': 'Delivery Tracking',
       'food_pickup_progress': 'Food Pickup In Progress',
       'tracking': 'Tracking',
@@ -116,7 +116,7 @@ class Translations {
       'continue_recipient': '继续作为接收者',
       'recipient_subtitle': '查找附近的食物捐赠',
       'together_message': '让我们一起减少食物浪费，支持我们的社区',
-      // Drawer
+
       'current_role': '当前角色',
       'sharer': '分享者',
       'recipient': '接收者',
@@ -126,7 +126,7 @@ class Translations {
       'settings': '设置',
       'about': '关于',
       'back_to_welcome': '返回欢迎页',
-      // Dashboard
+
       'people_helped': '帮助人数',
       'waste_saved': '节省浪费',
       'food_value': '食物价值',
@@ -146,7 +146,7 @@ class Translations {
       'upload_share_food': '上传并分享您的剩余食物',
       'find_food': '查找食物',
       'find_food_subtitle': '发现您附近的可用捐赠',
-      // Recipient Dashboard
+
       'welcome': '欢迎！',
       'find_fresh_food': '查找您附近的新鲜食物捐赠',
       'scan_qr_claim': '扫描二维码领取',
@@ -156,12 +156,12 @@ class Translations {
       'limit': '限额',
       'nearby_pickups': '附近取货点',
       'available_now': '现在可用',
-      // Bottom Navigation
+
       'upload': '上传',
       'recipes': '食谱',
       'scan_qr': '扫描',
       'map': '地图',
-      // Food Upload Screen
+
       'ai_scan': 'AI扫描',
       'manual_input': '手动输入',
       'food_name': '食物名称',
@@ -175,7 +175,7 @@ class Translations {
       'cancel': '取消',
       'scan_food': '扫描食物',
       'tap_to_scan': '点击相机扫描食物',
-      // Recipes Screen
+
       'recipe_discovery': '食谱探索',
       'what_ingredients': '您有什么食材？',
       'add_ingredient': '添加食材',
@@ -183,13 +183,13 @@ class Translations {
       'all': '全部',
       'minutes': '分钟',
       'servings': '份',
-      // QR Scanner Screen
+
       'scan_qr_code': '扫描二维码',
       'point_camera_qr': '将相机对准二维码以领取食物',
       'food_claimed': '食物已领取！',
       'claim_success': '成功领取',
       'ok': '确定',
-      // About Us Screen
+
       'about_us': '关于我们',
       'our_mission': '我们的使命',
       'mission_text': 'SmartBite将食物分享者与有需要的人联系起来，减少浪费同时建立社区纽带。',
@@ -207,7 +207,7 @@ class Translations {
       'contact_us': '联系我们',
       'partnerships': '合作伙伴',
       'donate': '捐赠',
-      // Delivery Tracking
+
       'delivery_tracking': '配送追踪',
       'food_pickup_progress': '食物取货进行中',
       'tracking': '追踪',
@@ -223,7 +223,7 @@ class Translations {
       'continue_recipient': 'Teruskan sebagai Penerima',
       'recipient_subtitle': 'Cari derma makanan berhampiran anda',
       'together_message': 'Bersama-sama, kita boleh mengurangkan pembaziran makanan dan menyokong komuniti kita',
-      // Drawer
+
       'current_role': 'Peranan semasa',
       'sharer': 'Pemberi',
       'recipient': 'Penerima',
@@ -233,7 +233,7 @@ class Translations {
       'settings': 'Tetapan',
       'about': 'Tentang',
       'back_to_welcome': 'Kembali ke Selamat Datang',
-      // Dashboard
+
       'people_helped': 'Orang Dibantu',
       'waste_saved': 'Sisa Dijimatkan',
       'food_value': 'Nilai Makanan',
@@ -253,7 +253,7 @@ class Translations {
       'upload_share_food': 'Muat naik dan kongsi lebihan makanan anda',
       'find_food': 'Cari Makanan',
       'find_food_subtitle': 'Cari sumbangan tersedia berhampiran anda',
-      // Recipient Dashboard
+
       'welcome': 'Selamat Datang!',
       'find_fresh_food': 'Cari derma makanan segar berhampiran anda',
       'scan_qr_claim': 'Imbas QR untuk Tuntut',
@@ -263,12 +263,12 @@ class Translations {
       'limit': 'had',
       'nearby_pickups': 'Pengambilan Berdekatan',
       'available_now': 'Tersedia Sekarang',
-      // Bottom Navigation
+
       'upload': 'Muat Naik',
       'recipes': 'Resipi',
       'scan_qr': 'Imbas QR',
       'map': 'Peta',
-      // Food Upload Screen
+
       'ai_scan': 'Imbasan AI',
       'manual_input': 'Input Manual',
       'food_name': 'Nama Makanan',
@@ -282,7 +282,7 @@ class Translations {
       'cancel': 'Batal',
       'scan_food': 'Imbas Makanan',
       'tap_to_scan': 'Ketik kamera untuk mengimbas makanan',
-      // Recipes Screen
+
       'recipe_discovery': 'Penemuan Resipi',
       'what_ingredients': 'Apakah bahan yang anda ada?',
       'add_ingredient': 'Tambah bahan',
@@ -290,13 +290,13 @@ class Translations {
       'all': 'Semua',
       'minutes': 'minit',
       'servings': 'hidangan',
-      // QR Scanner Screen
+
       'scan_qr_code': 'Imbas Kod QR',
       'point_camera_qr': 'Halakan kamera ke kod QR untuk menuntut makanan',
       'food_claimed': 'Makanan Dituntut!',
       'claim_success': 'Berjaya dituntut',
       'ok': 'OK',
-      // About Us Screen
+
       'about_us': 'Tentang Kami',
       'our_mission': 'Misi Kami',
       'mission_text': 'SmartBite menghubungkan pemberi makanan dengan mereka yang memerlukan, mengurangkan pembaziran sambil membina ikatan komuniti.',
@@ -314,7 +314,7 @@ class Translations {
       'contact_us': 'Hubungi Kami',
       'partnerships': 'Perkongsian',
       'donate': 'Derma',
-      // Delivery Tracking
+
       'delivery_tracking': 'Penjejakan Penghantaran',
       'food_pickup_progress': 'Pengambilan Makanan Sedang Berjalan',
       'tracking': 'Penjejakan',

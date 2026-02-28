@@ -26,8 +26,6 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
   bool _isHalal = true;
   DateTime? _selectedDate;
   bool _acceptTerms = false;
-  
-  // Removed invalid getter named 'class' because 'class' is a reserved keyword.
 
   @override
   void dispose() {
@@ -46,7 +44,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
           backgroundColor: const Color(0xFFFFF9EC),
           body: Stack(
             children: [
-              // Decorative bubbles and wavy line
+
               SizedBox(
                 width: double.infinity,
                 height: 180,
@@ -60,7 +58,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 8),
-                    // Custom Title (no AppBar)
+
                     Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 16),
                       child: Text(
@@ -73,7 +71,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                         ),
                       ),
                     ),
-                    // Mode Toggle
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Container(
@@ -206,7 +204,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
         );
       },
     );
-    // Decorative painter for top bubbles and wavy line
+
   }
 
   Widget _buildCameraPlaceholder() {
@@ -842,14 +840,13 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
   class _TopBubblesPainter extends CustomPainter {
     @override
     void paint(Canvas canvas, Size size) {
-      // Draw bubbles only (no wavy line)
+
       final bubblePaint = Paint()..color = const Color(0xFFFFCC80).withOpacity(0.7);
 
       canvas.drawCircle(Offset(size.width * 0.15, size.height * 0.3), 24, bubblePaint);
       canvas.drawCircle(Offset(size.width * 0.8, size.height * 0.2), 18, bubblePaint);
       canvas.drawCircle(Offset(size.width * 0.6, size.height * 0.5), 14, bubblePaint);
 
-      // Add more bubbles if desired
     }
   
     @override

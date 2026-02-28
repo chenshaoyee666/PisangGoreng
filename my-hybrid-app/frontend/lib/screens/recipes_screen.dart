@@ -7,13 +7,11 @@ import '../models/recipe.dart';
 import 'recipe_detail_screen.dart';
 import 'ai_recipe_screen.dart';
 
-// Custom painter for background bubbles
 class _BubbleBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..isAntiAlias = true;
 
-    // Original bubbles
     paint.color = const Color(0xFFFFE0B2).withOpacity(0.4); // light orange
     canvas.drawCircle(Offset(size.width * 0.2, size.height * 0.15), 60, paint);
 
@@ -26,16 +24,12 @@ class _BubbleBackgroundPainter extends CustomPainter {
     paint.color = const Color(0xFFD1C4E9).withOpacity(0.4); // light purple
     canvas.drawCircle(Offset(size.width * 0.1, size.height * 0.8), 50, paint);
 
-    // New bubbles
-    // Middle bubble
     paint.color = const Color(0xFFB2DFDB).withOpacity(0.4); // light teal
     canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.5), 35, paint);
 
-    // Bottom left bubble
     paint.color = const Color(0xFFFFE0B2).withOpacity(0.4); // light orange
     canvas.drawCircle(Offset(size.width * 0.18, size.height * 0.97), 40, paint);
 
-    // Bottom right bubble
     paint.color = const Color(0xFFD1C4E9).withOpacity(0.4); // light purple
     canvas.drawCircle(Offset(size.width * 0.85, size.height * 0.93), 32, paint);
   }
@@ -104,13 +98,13 @@ class _RecipesScreenState extends State<RecipesScreen> {
           backgroundColor: const Color(0xFFFFF9EC),
           body: Stack(
             children: [
-              // Bubbles background
+
               Positioned.fill(
                 child: CustomPaint(
                   painter: _BubbleBackgroundPainter(),
                 ),
               ),
-              // Main content
+
               Column(
                 children: [
                   Container(
@@ -230,7 +224,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                       ],
                     ),
                   ),
-                  // Move these widgets inside the main Column's children
+
                   Container(
                     height: 50,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -309,7 +303,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                   ),
                 ],
               ),
-              // AI Recipe Button - positioned at bottom right, above navigation bar
+
               Positioned(
                 bottom: 16,
                 right: 16,
@@ -395,7 +389,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              // Recipe image
+
               Container(
                 width: 80,
                 height: 80,
@@ -534,8 +528,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
               ),
               
               const SizedBox(width: 16),
-              
-              // Recipe details
+
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

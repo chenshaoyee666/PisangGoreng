@@ -141,7 +141,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
       }
 
       Widget _buildCurrentScreen(AppState appState) {
-        // Show different screens based on _currentIndex
+
         final lang = appState.selectedLanguage;
         switch (_currentIndex) {
           case 0:
@@ -500,7 +500,7 @@ class _SharerDashboardState extends State<SharerDashboard> {
       drawer: const AppDrawer(),
       body: Stack(
         children: [
-          // Decorative bubbles and wavy line
+
           SizedBox(
             width: double.infinity,
             height: 220,
@@ -529,7 +529,6 @@ class _SharerDashboardState extends State<SharerDashboard> {
   }
 }
 
-// Decorative painter for bubbles and wavy line
 class _DashboardBubblesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -537,19 +536,16 @@ class _DashboardBubblesPainter extends CustomPainter {
     final bubblePaint2 = Paint()..color = const Color(0xFFDA650B).withOpacity(0.18);
     final bubblePaint3 = Paint()..color = const Color(0xFF1A237E).withOpacity(0.10);
 
-    // Top and mid Bubbles
     canvas.drawCircle(Offset(size.width * 0.18, size.height * 0.32), 32, bubblePaint);
     canvas.drawCircle(Offset(size.width * 0.82, size.height * 0.18), 22, bubblePaint2);
     canvas.drawCircle(Offset(size.width * 0.60, size.height * 0.55), 18, bubblePaint3);
     canvas.drawCircle(Offset(size.width * 0.35, size.height * 0.12), 14, bubblePaint2);
     canvas.drawCircle(Offset(size.width * 0.75, size.height * 0.38), 12, bubblePaint);
 
-    // Bottom Bubbles (moved even lower)
     canvas.drawCircle(Offset(size.width * 0.15, size.height * 1.60), 28, bubblePaint2); // left
     canvas.drawCircle(Offset(size.width * 0.5, size.height * 2.33), 36, bubblePaint); // center (further off canvas for effect)
     canvas.drawCircle(Offset(size.width * 0.85, size.height * 1.48), 20, bubblePaint3); // right
 
-    // Wavy line
     final path = Path();
     path.moveTo(0, size.height * 0.85);
     path.cubicTo(

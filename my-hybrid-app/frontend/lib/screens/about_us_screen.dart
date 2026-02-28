@@ -68,7 +68,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
                       _buildDonationPortal(appState.selectedLanguage),
                       const SizedBox(height: 32),
                       _buildContactSection(appState.selectedLanguage),
-                      // ...existing code...
+
                     ],
                   ),
                 ),
@@ -317,7 +317,7 @@ class _AboutUsScreenState extends State<AboutUsScreen>
           ),
         ),
         const SizedBox(height: 16),
-        // Placeholder for steps (replace with your own step widgets)
+
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
